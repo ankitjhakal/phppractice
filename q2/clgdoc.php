@@ -30,7 +30,7 @@ $doc[1]->sent = 0;
 
 /* 
 *function to display document of clg
-*@parameter : first input: array $x(contains details about clg ),second input: array $y(contains details about documents)
+*@parameter : first param: array $x(contains details about clg ),second param: array $y(contains details about documents)
 *@return :nothing.
 */
 function display_doc($x, $y) {
