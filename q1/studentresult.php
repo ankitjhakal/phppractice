@@ -61,9 +61,11 @@ foreach ($student as $key=>$value)
 }
 echo "</table><br>";
 
-//We have a function that takes grade as input and returns subject, subject code and minimum required marks to pass the subject.
-// first input grade of a student(int) then in second parameter is that array means subject(array).
-//it returns array datail about minmarks to be obtained,subject code, and subject name.
+/*
+ *We have a function subdata
+ *@input : integer grade and array subject(contains descriptive data of subject)
+ *@returns : array $array[$a] which contains subject, subject code and minimum required marks to pass the subject.
+*/
 function subdata (int $a,$array) {
     return $array[$a];
 }
@@ -76,8 +78,11 @@ echo "<tr><td>".$value['name']."</td><td>".$value['code']."</td><td>".$value['mm
 }
 echo "</table><br>";
 
-//We have another function that takes student id and returns the subject code and their obtained marks.
-//first input is about student id(int) then that array means student(array) and if id match return marks detail array 
+/*
+ *We have a function studata
+ *@input : integer student id and array student(contains descriptive data of student)
+ *@returns : array  which contains minmarks of each subject to pass that subject.
+*/
 function studata (int $a,$array) {
   foreach ($array as $key=>$value)
   {
