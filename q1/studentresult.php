@@ -1,8 +1,8 @@
 <?php
-$student=array(array("id"=>"1","name"=>"a","dob"=>"1580812642","grade"=>"12","marks"=>array("h"=>"12","e"=>"22","s"=>"24")),
-               array("id"=>"2","name"=>"b","dob"=>"1580812642","grade"=>"11","marks"=>array("h"=>"18","e"=>"17","s"=>"24")),
-               array("id"=>"3","name"=>"c","dob"=>"1580812642","grade"=>"12","marks"=>array("h"=>"12","e"=>"22","s"=>"24")),
-               array("id"=>"4","name"=>"d","dob"=>"1580812642","grade"=>"10","marks"=>array("h"=>"0","e"=>"18","s"=>"24")));
+$student=array(array("id"=>"1","name"=>"a","dob"=>"1580812642","grade"=>"12","marks"=>array("hindi"=>"12","english"=>"22","science"=>"24")),
+               array("id"=>"2","name"=>"b","dob"=>"1580812642","grade"=>"11","marks"=>array("hindi"=>"18","english"=>"17","science"=>"24")),
+               array("id"=>"3","name"=>"c","dob"=>"1580812642","grade"=>"12","marks"=>array("hindi"=>"12","english"=>"22","science"=>"24")),
+               array("id"=>"4","name"=>"d","dob"=>"1580812642","grade"=>"10","marks"=>array("hindi"=>"0","english"=>"18","science"=>"24")));
 $subject=array( "12"=>array(array("name" => "hindi","code" =>"h","mm" => "20"),
                             array("name" => "english","code" =>"e","mm" => "20"),
                             array("name" => "science","code" =>"s","mm" => "20")),
@@ -22,7 +22,7 @@ foreach ($student as $key=>$value){
   foreach ($arr as $key1=>$val){
     for ($x=0;$x<3;$x++){
     // if subject code match then add a new attribute in student array with mm(minimum marks) column
-    if ($subject[$gra][$x]['code'] == $key1){
+    if ($subject[$gra][$x]['name'] == $key1){
       $student[$key]['mm'][$key1] = $subject[$gra][$x]['mm'];
     //increment count for getting result which is more then 40 %
       if ($subject[$gra][$x]['mm'] <= $arr[$key1]){
