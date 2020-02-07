@@ -28,7 +28,11 @@ $doc[1]->doc_type = 'B';
 $doc[1]->doc_college = 1;
 $doc[1]->sent = 0;
 
-// A function to display all the data in specific formatt as shown in ques
+/* 
+*function to display document of clg
+*@parameter : first input: array $x(contains details about clg ),second input: array $y(contains details about documents)
+*@return :nothing.
+*/
 function display_doc($x, $y) {
 	// Condition to check sent_status
 	for ($i=0; $i < count($y); $i++) {
