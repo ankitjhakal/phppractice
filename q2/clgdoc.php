@@ -45,13 +45,13 @@ function display_doc($x, $y) {
 	}
 
 	// Displaying data on the basis of doc_college for every college
-	for ($i=0; $i < count($x); $i++) {
+	for ($x as $key1 => $value1) {
 		echo "<br>";
-		echo "\$coll[college_id]->college_name='". $x[$i+1] ."';";
+		echo "\$coll[college_id]->college_name='". $x[$key1] ."';";
 		echo "<br>";
-		echo "\$coll[college_id]->college_id='". ($i+1) ."';";
+		echo "\$coll[college_id]->college_id='". ($key1) ."';";
 		foreach ($y as $key => $value) {
-			if ($y[$key]->doc_college == ($i+1)) {
+			if ($y[$key]->doc_college == ($key1)) {
 				echo "<br>";
 				echo "\$coll[college_id]->docs[".$key."]->doc_name ='". $y[$key]->doc_name ."';";
 				echo "<br>";
@@ -69,6 +69,7 @@ function display_doc($x, $y) {
 				echo "\$coll[college_id]->docs[".$key."]->sent_status ='". $y[$key]->sent_status ."';";
 			}
 		}
+		echo "<br>";
 
 	}
 }
