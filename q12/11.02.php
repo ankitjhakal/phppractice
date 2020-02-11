@@ -30,7 +30,7 @@ foreach ($inputarray as $key => $value) {
   echo "<tr><td>".$inputarray[$key]['pd']."</td><td>".$inputarray[$key]['sp']."</td><td>". date("Y-m-d",$inputarray[$key]['sd'])."</td><td>".$inputarray[$key]['ct']."</td></tr>";
   }
 echo "</table><br>";
-//add the sd of two consecutive row
+//add the sp of two consecutive row
 $previd=null;
 foreach ($inputarray as $key => $value) {
    if($inputarray[$key]['pd'] == $previd) {
