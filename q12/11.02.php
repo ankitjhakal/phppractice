@@ -15,9 +15,7 @@ $inputarray = array(
   );
 
 print_r($inputarray);
-echo "<br>Created date is " . date("Y-m-d", $x)."<br>";
-$arr=array();
-
+//coversion of string into timestamp.
 foreach ($inputarray as $key => $value) {
   $inputarray[$key]['sd']=strtotime($value['sd']);
 }
@@ -41,10 +39,10 @@ foreach ($inputarray as $key => $value) {
      $previd=$value['pd'];
    }
    else {
-    $previd=$value['pd'];
-    $x=$value['sp'];
+     $previd=$value['pd'];
+     $x=$value['sp'];
   }
-  $inputarray[$key]['ct']=$inputarray[$key]['ct']."-".$inputarray[$key]['pd'];
+     $inputarray[$key]['ct']=$inputarray[$key]['ct']."-".$inputarray[$key]['pd'];
  }
 
 echo "====><strong>table</strong><br>";
