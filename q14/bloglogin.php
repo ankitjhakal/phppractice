@@ -5,7 +5,7 @@
 include 'blogconnection.php';
 //if session variable @username is set then redirect to homepage.
 if (isset ($_SESSION['username'])) {
-	echo "<script>location.href = 'blogindex.php'</script>";
+	echo "<script>location.href = 'blogindex'</script>";
 }
 else {
 	if (isset ($_POST['nuser'])) {
@@ -17,11 +17,11 @@ else {
 		if (mysqli_num_rows($result) == 1) {
 			//session variable @username is set to access data in other files from database and redirect to homepage else stay on login page.
 			$_SESSION['username'] = $username;
-			echo "<script>location.href = 'blogindex.php'</script>";
+			echo "<script>location.href = 'blogindex'</script>";
 		}
 		else {
 			echo "Incorrect Details";
-			echo "<script>location.href = 'bloglogin.php'</script>";
+			echo "<script>location.href = 'bloglogin'</script>";
 		}
 	}
 }
@@ -38,8 +38,8 @@ else {
 <body>
 	<header>
 		<ul>
-			<li><a href="blogindex.php">Home</a></li>
-			<li><a href="blogsignup.php">Register</a></li>
+			<li><a href="blogindex">Home</a></li>
+			<li><a href="blogsignup">Register</a></li>
 		</ul>
 	</header>
 	<h1>Please Login To Enter The Blog</h1>

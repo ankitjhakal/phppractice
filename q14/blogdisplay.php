@@ -16,26 +16,30 @@ else {
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="blog_style.css">
-	<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+	<link rel = "stylesheet" type = "text/css" href = "blog_style.css">
+	<link href = 'http://fonts.googleapis.com/css?family=Lato:400,700' rel = 'stylesheet' type = 'text/css'>
 	<title>Blog Content</title>
 </head>
 	<header>
 		<body>
 		<ul>
-			<li><a href="blogindex.php">Home</a></li>
+			<li><a href = "blogindex">Home</a></li>
+			<li><a href = "entry">Add</a></li>
+      <li><a href = "bloglogout">logout</a></li>
 		</ul>
 	</header>
 	<main>
-		<div style="text-align: center;">
+		<div style = "text-align: center;">
 			<h1>Blogs</h1>
 		</div>
-		<div class="display">
+		<div class = "display">
+			<!-- php code for get blogs with username using oops concpet  -->
 			<?php
 			require 'blogfunc.php';
-			get_by_id($blog_no);
+			$obj = new blog();
+			$obj->get_by_username();
 			?>
-		</div>
+	</div>
 	</main>
 </body>
 </html>

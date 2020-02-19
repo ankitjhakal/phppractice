@@ -5,10 +5,10 @@
 include 'blogconnection.php';
 // if session variable @username is set then assign @user my blogs else login.
 if (isset($_SESSION['username'])) {
-	$user="my blogs";
+	$user = "my blogs";
 }
 else {
-	$user='Login';
+	$user = 'Login';
 }
 ?>
 <!-- html for homepage -->
@@ -22,26 +22,30 @@ else {
 <body>
 	<header>
 		<ul>
-			<li><a href='bloglogin.php'>Login</a></li>
+
 			<?php
 			// if session variable is set then display my blogs and logout in navbar else login.
 			if (isset($_SESSION['username'])) {
-				echo "<li><a href = 'blogdisplay.php'>$user</a></li>";
-        echo "<li><a href = 'bloglogout.php'>logout</a></li>";
+				echo "<li><a href = 'blogdisplay'>$user</a></li>";
+        echo "<li><a href = 'bloglogout'>logout</a></li>";
+			}
+			else {
+				echo "<li><a href = 'bloglogin'>Login</a></li>";
 			}
 			?>
 		</ul>
 	</header>
 	<main>
-		<div class="heading">
+		<div class = "heading">
 			<h1>Welcome to our blog site</h1>
 		</div>
-		<div class="content">
-			<div class="outline">
-				<!-- php code to display all blogs -->
+		<div class = "content">
+			<div class = "outline">
+				<!-- php code to display all blogs using oops concept -->
 				<?php
 				require 'blogfunc.php';
-				get_homepage_blogs();
+				$obj = new blog();
+				$obj->get_homepage_blogs();
 				?>
 			</div>
 		</div>

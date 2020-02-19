@@ -1,14 +1,20 @@
 <!--  * @file
       * page for add new blogs.
 -->
-
-
 <?php
 include 'blogconnection.php';
 // if session variable is not set then redirect to login page.
+if(isset($_SESSION['username'])) {
+$blog_no = $_GET['blog_no'];
+$q = "SELECT Title,description FROM blog  WHERE bid =$blog_no";
+$result = mysqli_query($conn, $q);
+$row = mysqli_fetch_assoc($result);
+}
 if (!isset($_SESSION['username'])) {
 	echo "<script>location.href='bloglogin.php'</script>";
 }
+
+
 ?>
 <!-- html form for add blog -->
 <!DOCTYPE html>
@@ -27,16 +33,15 @@ if (!isset($_SESSION['username'])) {
 	</header>
 	<main>
 		<div class='heading'>
-			<h1>Please enter the data for your blog site.</h1>
+			<h1>Please enter the data for edit your blog .</h1>
 		</div>
 		<div class="form">
 			<!-- Data to enter in the database is send through this form. -->
-			<form action='entry.php' method="post" enctype="multipart/form-data">
-				<label>Title :</label><input type="text" name="title" placeholder="Title of the blog"><br><br>
-				<label>Image :</label><input type="file" name="img" required><br><br>
-				<label>bid :</label><input type="text" name="bid" required><br><br>
-				<label>Username :</label><input type="text" name="username" placeholder="username"><br><br>
-				<label>Description :</label><textarea name="desc" rows="5" cols="40"></textarea><br><br>
+		 <form action='' method="post" enctype="multipart/form-data">
+				<label>Title :</label><input type="text" name="title" value="<?php echo $row['Title'] ?>" placeholder="Title of the blog"><br><br>
+				<label>Description :</label><textarea name="desc"  rows="5" cols="40"><?php echo $row['description'] ?></textarea><br><br>
+				<input type='hidden' name= 'b_id' value="<?php echo $blog_no ?>">
+				<!-- <input type="text" name="bid" value=""><br> -->
 				<input type="submit" name="submit" value="Submit">
 			</form>
 		</div>
@@ -44,7 +49,8 @@ if (!isset($_SESSION['username'])) {
 </body>
 </html>
 <?php
-$title=$img=$desc='';
+//include 'blogconnection.php';
+$title = $img = $desc = '';
 
 // Checks if data is only sent through POST method and submit button is pressed.
 if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST['submit'])) {
@@ -52,34 +58,25 @@ if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST['submit'])) {
 	// Checks if title or description of the blog is empty or not.
 	if (empty($_POST['title']) || empty($_POST['desc'])) {
 		echo "enter the title";
-		echo "<script>location.href = 'entry.php'</script>";
+		echo "<script>location.href = 'edit.php'</script>";
 	}
 	else {
 
-		// File path for the image and other data is being stored in the variables.
-		$filepath = "ankit/" . basename($_FILES["img"]["name"]);
+		// File path for the image and other data is being stored in the variables.=""
+		$title = $desc = $bid = "";
 		$title = $_POST['title'];
 		$desc = $_POST['desc'];
-		$bid = $_POST['bid'];
-		$username = $_POST['username'];
-		$img = $_FILES['img']['name'];
-		if (move_uploaded_file($_FILES["img"]["tmp_name"], $filepath)) {
-
-			// It inserts the data into our database.
-			$sql_insert = "INSERT INTO blog (Title, image, description, bid, username)VALUES ('$title', '$img', '$desc', '$bid','$username')";
-			$result=mysqli_query($conn, $sql_insert);
-
-			if ($result) {
-				echo "Inserted Successfully";
-			}
-			else {
-				echo mysqli_error($conn);
-			}
-		}
+		$bid = $_POST['b_id'];
+		// It update the data into our database.
+		$sql_insert = "UPDATE blog SET Title='$title', description ='$desc' WHERE bid =".$bid."";
+		$result=mysqli_query($conn, $sql_insert);
+		if ($result) {
+			header('location: blogdisplay');
+    }
 		else {
-			echo "error occure";
+				echo mysqli_error($conn);
 		}
-
-	}
+		}
 }
+
 ?>
