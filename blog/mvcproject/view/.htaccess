@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [NC,L]
+RewriteRule "^/action/(.*)/(.*)$" "/index.php?action=$1&blog_no=$2" [NC,PT]
+RewriteRule "^index/action/(.*)$" "/index.php?action=$1" [NC,PT]
+
+</IfModule>
