@@ -1,7 +1,13 @@
+<!--
+  *@file
+  *this file is basically is working as frontcontroller for project
+ -->
+
 <?php
 error_reporting( E_WARNING );
 $blog_no=$_GET['blog_no'];
 $action=$_GET['action'];
+// this file is added for calling methods like getbyid,getbyusername,and homepage
 require 'controller/blogfunc.php';
 
 if($action=="")
