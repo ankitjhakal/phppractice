@@ -23,9 +23,9 @@ else {
 	<header>
 		<body>
 		<ul>
-			<li><a href = "index">Home</a></li>
-			<li><a href = "index?action=add">Add</a></li>
-      <li><a href = "index?action=bloglogout">logout</a></li>
+			<li><a href = "homepage">Home</a></li>
+			<li><a href = "add">Add</a></li>
+      <li><a href = "bloglogout">logout</a></li>
 		</ul>
 	</header>
 	<main>
@@ -55,7 +55,7 @@ else {
 		}
 		?>
 			<?php
-			header('location :index?action=myblogs');
+			header('location :myblogs');
 			?>
 	</div>
 	</main>

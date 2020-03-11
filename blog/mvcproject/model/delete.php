@@ -12,8 +12,12 @@ else {
 }
 if(isset($_SESSION['username']))
 {
+	$action=$_GET['action'];
+	$url_arr=explode('/',$action);
+	$blog_no=explode('"',$url_arr[2]);
+	$blog_no=$blog_no[0];
   $sql="DELETE FROM `blog` WHERE bid='".$blog_no."'";
   $result=mysqli_query($conn, $sql);
-  header('location: index?action=myblogs');
+  header('location: ../myblogs');
 }
  ?>

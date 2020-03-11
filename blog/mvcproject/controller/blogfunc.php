@@ -18,7 +18,7 @@ class blog {
   if (mysqli_num_rows($result) >= 1) {
     echo "<div style='background-color:black; height:40px; margin:-10px; padding:1px;'>";
     echo "<ul style='list-style-tyle:none;margin: 10px auto;'>";
-    echo "<li><a href='index.php' style='color:white; text-decoration:none;'>Home</a></li>";
+    echo "<li><a href='../' style='color:white; text-decoration:none;'>Home</a></li>";
     echo "</ul></div><br><br><br>";
   // Data is displayed in appropriate div classes from the database.
   while ($row = mysqli_fetch_assoc($result)) {
@@ -48,9 +48,9 @@ function get_by_username() {
   if (mysqli_num_rows($result) >= 1) {
     echo "<div style='background-color:black; height:40px; margin:-10px; padding:1px;'>";
     echo "<ul>";
-    echo "<li style='margin:0px;float:left;padding-right:30px;'><a href = 'index'  style='color:white;text-decoration:none'>Home</a></li>";
-		echo "<li  style='margin:0px;float:left;padding-right:30px;'><a href = 'index?action=addpage'style='color:white;text-decoration:none' >Add</a></li>";
-    echo "<li style='margin:0px;float:left;'><a href = 'index?action=bloglogout' style='color:white;text-decoration:none'>logout</a></li>";
+    echo "<li style='margin:0px;float:left;padding-right:30px;'><a href = '../index'  style='color:white;text-decoration:none'>Home</a></li>";
+		echo "<li  style='margin:0px;float:left;padding-right:30px;'><a href = 'addpage'style='color:white;text-decoration:none' >Add</a></li>";
+    echo "<li style='margin:0px;float:left;'><a href = 'bloglogout' style='color:white;text-decoration:none'>logout</a></li>";
     echo "</ul></div><br><br><br>";
   // Data is displayed in appropriate div classes from the database.
    while ($row = mysqli_fetch_assoc($result)) {
@@ -65,8 +65,8 @@ function get_by_username() {
     echo $row['description'];
     echo "</div>";
     echo "<div class='menu'>";
-    echo "<li><a href='index?action=editpage&blog_no=".$row['bid']."'>Edit</a></li>";
-    echo "<li><a href='index?action=delete&blog_no=".$row['bid']."'>Delete</a></li>";
+    echo "<li><a href='editpage/".$row['bid']."'>Edit</a></li>";
+    echo "<li><a href='delete/".$row['bid']."'>Delete</a></li>";
     echo "</div>";
     echo "</div><br><br>";
   }
@@ -74,9 +74,9 @@ function get_by_username() {
 else {
   echo "<div style='background-color:black; height:40px; margin:-10px; padding:1px;'>";
   echo "<ul>";
-  echo "<li style='margin:0px;float:left;padding-right:30px;'><a href = 'index'  style='color:white;text-decoration:none'>Home</a></li>";
-  echo "<li  style='margin:0px;float:left;padding-right:30px;'><a href = 'index?action=addpage'style='color:white;text-decoration:none' >Add</a></li>";
-  echo "<li style='margin:0px;float:left;'><a href = 'index?action=bloglogout' style='color:white;text-decoration:none'>logout</a></li>";
+  echo "<li style='margin:0px;float:left;padding-right:30px;'><a href = '../index'  style='color:white;text-decoration:none'>Home</a></li>";
+  echo "<li  style='margin:0px;float:left;padding-right:30px;'><a href = 'addpage'style='color:white;text-decoration:none' >Add</a></li>";
+  echo "<li style='margin:0px;float:left;'><a href = 'bloglogout' style='color:white;text-decoration:none'>logout</a></li>";
   echo "</ul></div><br><br><br>";
   echo "EMPTY TEXT";
 }
@@ -95,7 +95,15 @@ function get_homepage_blogs() {
     echo "<div class='data' style='background-color:#20e3e3;margin:0 40;'>";
     echo "<div class='block'>";
     echo "<div class='title'>";
-    echo "<a href='index?action=getbyid&blog_no=".$row['bid']."'> ".$row['bid']."</a>";
+    $action=$_GET['action'];
+    $url_arr=explode('/',$action);
+    $n=count($url_arr);
+    if($n==1) {
+         echo "<a href='index/getbyid/".$row['bid']."'> ".$row['bid']."</a>";
+       }
+       else {
+         echo "<a href='getbyid/".$row['bid']."'> ".$row['bid']."</a>";
+       }
     echo "<div class='time'>";
     echo "Updated on ".$row['date'];
     echo "</div>";

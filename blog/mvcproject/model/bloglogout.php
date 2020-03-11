@@ -6,10 +6,10 @@
 session_start();
 if (isset($_SESSION['username'])) {
 	session_destroy();
-	echo "<script>location.href='index?action=bloglogin'</script>";
+	echo "<script>location.href='bloglogin'</script>";
 }
 
 else {
-	echo "<script>location.href='index?action=bloglogin'</script>";
+	echo "<script>location.href='bloglogin'</script>";
 }
 ?>

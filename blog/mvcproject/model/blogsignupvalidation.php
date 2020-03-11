@@ -25,7 +25,7 @@ else {
       if ($result = mysqli_query ($conn, $q)) {
         echo "<strong style=color:red;>inserted row</strong><br><br>";
       }
-      header('location: index?action=loginpage');
+      header('location: loginpage');
     }
 }
  ?>

@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST['submit'])) {
 	// Checks if title or description of the blog is empty or not.
 	if (empty($_POST['title']) || empty($_POST['desc'])) {
 		echo "enter the title";
-		echo "<script>location.href = 'index?action=edit'</script>";
+		echo "<script>location.href = 'edit'</script>";
 	}
 	else {
     include 'blogconnection.php';
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST['submit'])) {
 		$sql_insert = "UPDATE blog SET Title='$title', description ='$desc' WHERE bid =".$bid."";
 		$result=mysqli_query($conn, $sql_insert);
 		if ($result) {
-			header('location: index?action=myblogs');
+			header('location: ../myblogs');
     }
 		else {
 				echo mysqli_error($conn);

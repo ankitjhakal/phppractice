@@ -24,7 +24,7 @@ else {
 	<header>
 		<body>
 		<ul>
-			<li><a href="index">Home</a></li>
+			<li><a href="homepage">Home</a></li>
 		</ul>
 	</header>
 	<main>
@@ -35,7 +35,7 @@ else {
 			<!-- php code for get blogs with blog_id using oops concpet  -->
 
 			<?php
-			header('location : index?action=getbyid&blog_no=$blog_no');
+			header('location : getbyid/$blog_no');
 			?>
 		</div>
 	</main>
