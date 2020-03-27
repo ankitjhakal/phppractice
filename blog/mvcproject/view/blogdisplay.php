@@ -1,6 +1,6 @@
-x<!--
-     * @file
-     * It will diplay blogs
+<!--
+	* @file
+	* It will display blogs
 -->
 <?php
 include 'blogconnection.php';
@@ -33,7 +33,7 @@ else {
 			<h1>Blogs</h1>
 		</div>
 		<div class = "display">
-			<!-- php code for get blogs with username using oops concpet  -->
+		<!-- php code for get blogs with username using oops concpet  -->
 		<?php
 		  $sql = "SELECT * FROM blog WHERE bid='".$id."'";
 		  $result = mysqli_query($conn, $sql);
@@ -54,9 +54,9 @@ else {
 		  }
 		}
 		?>
-			<?php
+		<?php
 			header('location :myblogs');
-			?>
+		?>
 	</div>
 	</main>
 </body>

@@ -1,5 +1,6 @@
-<!-- * @file
-     * signup page if user doesn't exist.
+<!--
+	* @file
+	* signup page if user doesn't exist.
 -->
 <!DOCTYPE html>
 <html>

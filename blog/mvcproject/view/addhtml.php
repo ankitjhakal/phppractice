@@ -1,8 +1,10 @@
-<!--  * @file
-      * page for add new blogs.
+<!--
+  * @file
+	* page for add new blogs.
 -->
 <?php
 include 'blogconnection.php';
+
 // if session variable is not set then redirect to login page.
 if (!isset($_SESSION['username'])) {
 	echo "<script>location.href='loginpage'</script>";
@@ -40,43 +42,36 @@ if (!isset($_SESSION['username'])) {
 </body>
 </html>
 <?php
-$title=$img=$desc='';
-
+$title = $img = $desc = '';
 // Checks if data is only sent through POST method and submit button is pressed.
-if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST['submit'])) {
-
+if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 	// Checks if title or description of the blog is empty or not.
-	if (empty($_POST['title']) || empty($_POST['desc'])) {
-		echo "enter the title";
+	if(empty($_POST['title']) || empty($_POST['desc'])) {
+	 	echo "enter the title";
 		echo "<script>location.href = 'index?action=add'</script>";
 	}
 	else {
-
 		// File path for the image and other data is being stored in the variables.
 		$filepath = "ankit/" . basename($_FILES["img"]["name"]);
 		$title = $_POST['title'];
 		$desc = $_POST['desc'];
 		$username = $_POST['username'];
 		$img = $_FILES['img']['name'];
-		if (move_uploaded_file($_FILES["img"]["tmp_name"], $filepath)) {
-
+		if(move_uploaded_file($_FILES["img"]["tmp_name"], $filepath)) {
 			// It inserts the data into our database.
-			$sql_insert = "INSERT INTO blog (Title, image, description, username)VALUES ('$title', '$img', '$desc','$username')";
-			$result=mysqli_query($conn, $sql_insert);
-
-			if ($result) {
+			$sql_insert = "INSERT INTO blog (Title, image, description, username) VALUES ('$title', '$img', '$desc','$username')";
+			$result = mysqli_query($conn, $sql_insert);
+			if($result) {
 				echo "Inserted Successfully";
 				header('location: index?action=myblogs');
-
-			}
+			  }
 			else {
 				echo mysqli_error($conn);
-		}
-	}
+		    }
+	    }
 		else {
 			echo "error occure";
-		}
-
-	}
+		  }
+	  }
 }
 ?>

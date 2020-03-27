@@ -1,23 +1,22 @@
-<!--  * @file
-      * page for add new blogs.
+<!--
+	* @file
+	* page for add new blogs.
 -->
 <?php
 include 'blogconnection.php';
 // if session variable is not set then redirect to login page.
 if(isset($_SESSION['username'])) {
-	$action=$_GET['action'];
-	$url_arr=explode('/',$action);
-	$blog_no=explode('"',$url_arr[2]);
-	$blog_no=$blog_no[0];
+	$action = $_GET['action'];
+	$url_arr = explode('/',$action);
+	$blog_no = explode('"',$url_arr[2]);
+	$blog_no = $blog_no[0];
   $q = "SELECT Title,description FROM blog  WHERE bid =$blog_no";
   $result = mysqli_query($conn, $q);
   $row = mysqli_fetch_assoc($result);
-}
+  }
 if (!isset($_SESSION['username'])) {
 	echo "<script>location.href='loginpage'</script>";
-}
-
-
+	}
 ?>
 <!-- html form for add blog -->
 <!DOCTYPE html>

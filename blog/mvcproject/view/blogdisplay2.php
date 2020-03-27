@@ -1,6 +1,6 @@
 <!--
-     * @file
-     * It will diplay blogs
+   * @file
+   * It will diplay blogs
 -->
 <?php
 include 'blogconnection.php';
@@ -33,7 +33,6 @@ else {
 		</div>
 		<div class="display">
 			<!-- php code for get blogs with blog_id using oops concpet  -->
-
 			<?php
 			header('location : getbyid/$blog_no');
 			?>

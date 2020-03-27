@@ -1,6 +1,10 @@
+<!--
+  *@file
+  *this file contains html code for login page.
+ -->
 <?php
-error_reporting( E_WARNING );
- ?>
+  error_reporting( E_WARNING );
+?>
 <!-- html code for login page  -->
 <!DOCTYPE html>
 <html>
