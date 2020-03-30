@@ -16,11 +16,11 @@
 		if(isset($_SESSION['user_name'])) {
 			echo "<a  href = '?BlogDisplay/userhome'>MyBlogs</a>";
 			echo "<a  href = '?BlogFunction/add'>Add Blogs</a></p>";
-      echo "<a style='float:right' href='?Login/logout'>LOGOUT</a>";
+      echo "<a  href='?Login/logout' class='rightanchortag'>LOGOUT</a>";
 		}
 		else {
 			echo "<a  href='?Login/login'>LOGIN</a>";
-      echo "<a style='float:right' href='?SignUp/signup'>SIGN UP</a>";
+      echo "<a  href='?SignUp/signup' class='rightanchortag'>SIGN UP</a>";
 		}
 		?>
 	</div>
