@@ -8,14 +8,14 @@
 */
 
 class Blogdisplaycontrol {
-  //this function is used to control for displaying  user's home page.
+  // this function is used to control for displaying  user's home page.
 	function userhome() {
 		$usr = $_SESSION['user_name'];
 		include('model/Blogdisplay.php');
 		$obj = new Homemodel;
 		$obj->userhome($usr);
 	}
-	//this function is used to control for displaying all user's blogs.
+	// this function is used to control for displaying all user's blogs.
   function home() {
 		include('model/Blogdisplay.php');
 		$obj = new Homemodel;

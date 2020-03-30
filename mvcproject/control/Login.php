@@ -9,8 +9,8 @@
 
 class Logincontrol {
 	/**
-	   *this function is used to redirect userhome page if username is setup else
-	   *display login page.
+	   * this function is used to redirect userhome page if username is setup else
+	   * display login page.
 	*/
 	function login() {
 		if(isset($_SESSION['user_name'])) {
@@ -19,7 +19,7 @@ class Logincontrol {
 		include('view/login.php');
 	}
 	/**
-	   *this function will check login validity,if correct redirect to user home
+	   * this function will check login validity,if correct redirect to user home
 	   * -view else redirect to again login page.
 	*/
 	function logincheck() {

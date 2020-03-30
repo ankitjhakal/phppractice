@@ -20,6 +20,7 @@
 		}
 		else {
 			echo "<a  href='?Login/login'>LOGIN</a>";
+      echo "<a style='float:right' href='?Signup/signup'>SIGN UP</a>";
 		}
 		?>
 	</div>

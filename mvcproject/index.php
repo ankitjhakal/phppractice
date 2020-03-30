@@ -21,9 +21,9 @@ if(isset($args[2]) && $args[2] != '') {
 	$id = $args[2];
 }
 // it's all about invalid urls,for wrong url  show page not found message.
-$argsarr = array("Login", "Blogfun", "Blogdisplay");
+$argsarr = array("Login", "Blogfun", "Blogdisplay", "Signup");
 $argsarr2 = array("home", "userhome", "blog", "add", "edit", "delete" , "login",
-"logout", "logincheck", "editfeed", "addblog");
+"logout", "logincheck", "editfeed", "addblog", "signup", "signupcheck");
 $argsarr3 = array("home", "add", "login" , "logout", "userhome");
 // conditions forinvalid urls and show pagenot found msg.
 if(!in_array($control, $argsarr)) {
