@@ -1,19 +1,19 @@
 <!--
    * @file
-   * this model file contains all functions related to login validity.
+   * This model file contains all functions related to login validity.
  -->
 <?php
 /**
-  * this class is used to check validity  of user login.
+  * This class is used to check validity  of user login.
 */
-class Loginmodel {
+class LoginModel {
 	/**
-	   * this function will check login validity.
+	   * This function will check login validity.
 		 * @return mixed
 	*/
 	function login() {
 		include 'blogconnection.php';
-		// if session variable @username is set then redirect to homepage.
+		// If session variable @username is set then redirect to homepage.
 	 	if(isset ($_POST['nuser'])) {
 			$username = $_POST['nuser'];
 			$password = base64_encode($_POST['userp']);

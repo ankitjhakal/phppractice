@@ -1,6 +1,6 @@
 <!--
 	* @file
-	* signup page if user doesn't exist.
+	* Signup page if user doesn't exist.
 -->
 <!DOCTYPE html>
 <html>
@@ -12,7 +12,7 @@
 </head>
 <body>
 	<h1>Please signup To Enter The Blog</h1>
-	<form method="post" action="?Signup/signupcheck">
+	<form method="post" action="?SignUp/signupcheck">
 		Username:<input type="text" name="user" placeholder="admin"><br><br>
 		Password:<input type="password" name="pass" placeholder="admin"><br><br>
 		<input type="submit" name="signup" value="signup">

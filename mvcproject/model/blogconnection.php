@@ -1,6 +1,6 @@
 <!--
   * @file
-  * this file is basically is working database connectivity file.
+  * This file is basically is working database connectivity file.
  -->
 <?php
 

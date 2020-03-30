@@ -1,11 +1,8 @@
 <!--
   *@file
-  *this file contains html code for login page.
+  *This file contains html code for login page.
  -->
-<?php
-  error_reporting( E_WARNING );
-?>
-<!-- html code for login page  -->
+<!-- Html code for login page  -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +13,7 @@
 </head>
 <body>
 	<h1>Please Login To Enter The Blog</h1>
-	<!-- take input from user and check for correct credentials on same page -->
+	<!-- Get input from user and check for correct credentials on same page -->
 	<form method="post" action="?Login/logincheck">
 		Username:<input type="text" name="nuser" placeholder="admin"><br><br>
 		Password:<input type="password" name="userp" placeholder="admin"><br><br>

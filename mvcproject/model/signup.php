@@ -1,14 +1,14 @@
 <!--
    * @file
-   * this model file contains all functions related to login validity.
+   * This model file contains all functions related to login validity.
  -->
 <?php
 /**
-  * this class is used to check validity  of signup.
+  * This class is used to check validity  of signup.
 */
-class Signupmodel {
+class SignUpModel {
 	/**
-	   * this function will check signup validity.
+	   * This function will check signup validity.
 	*/
 	function signup() {
     $username = $_POST['user'];

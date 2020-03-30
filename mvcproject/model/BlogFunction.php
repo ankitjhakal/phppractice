@@ -1,16 +1,16 @@
 <!--
   * @file
-  * this  model file contains all functions used for blog editing,adding  and deleting.
+  * This  model file contains all functions used for blog editing,adding  and deleting.
  -->
  <?php
 /**
-  * this class contains functions  used for fetching data of blogs, storing data
-  * of a blog again in database.
+  * This class contains functions  used for fetching data of blogs, storing data
+  * Of a blog again in database.
 */
 
-class Blogfunmodel {
+class BlogFunctionModel {
   /**
-     * this function is used to fetch data of blogs according to id.
+     * This function is used to fetch data of blogs according to id.
      * @param
      * @id basically contains the blog_id
   */
@@ -22,10 +22,10 @@ class Blogfunmodel {
       echo "<h1> blog not found</h1>";
     }
     include ('view/blog.php');
-    $obj = new Blogview;
+    $obj = new BlogView;
     $obj->show($res);
   }
-  // this function is used to store blog form data in database.
+  // This function is used to store blog form data in database.
   function add() {
     include 'blogconnection.php';
     $title = $desc = '';
@@ -34,10 +34,10 @@ class Blogfunmodel {
       // Checks if title or description of the blog is empty or not.
       if(empty($_POST['title']) || empty($_POST['desc'])) {
       	echo "enter the title";
-      	echo "<script>location.href = '?Blogfun/add'</script>";
+      	echo "<script>location.href = '?BlogFunction/add'</script>";
       }
       else {
-      	// data is being stored in the variables.
+      	// Data is being stored in the variables.
       	$title = $_POST['title'];
       	$desc = $_POST['desc'];
       	$username = $_POST['username'];
@@ -47,7 +47,7 @@ class Blogfunmodel {
       	$res = mysqli_query($con, $sql_insert);
     		if($res) {
     			echo "Inserted Successfully";
-    			header('location:?Blogdisplay/userhome');
+    			header('location:?BlogDisplay/userhome');
     		}
     		else {
     			echo mysqli_error($con);
@@ -56,7 +56,7 @@ class Blogfunmodel {
     }
   }
   /**
-     * this function is used to delete blog.
+     * This function is used to delete blog.
      * @param
      * @id basically contains the blog_id
   */
@@ -68,14 +68,14 @@ class Blogfunmodel {
     if($_SESSION['user_name'] == $row['username']) {
       $sql = "DELETE FROM `blog` WHERE bid = $id";
       $con->query($sql);
-      header("location: ?Blogdisplay/userhome");
+      header("location: ?BlogDisplay/userhome");
     }
     else {
-      echo "<h1>Only Unauthenticated user can do this</h1>";
+      echo "<h1>Only Unauthenticated user can do This</h1>";
     }
   }
   /**
-     * this function is used to return edit blog data array to controller file.
+     * This function is used to return edit blog data array to controller file.
      * @param  @id basically contains the blog_id.
      * @return mixed
   */
@@ -90,7 +90,7 @@ class Blogfunmodel {
     return $res;
   }
   /**
-     * this function is used to restore edit blog data in database.
+     * This function is used to restore edit blog data in database.
      * @param
      * @id basically contains the blog_id
   */
@@ -102,7 +102,7 @@ class Blogfunmodel {
     $sql = "UPDATE blog SET Title = '$title', description = '$desc' WHERE bid =
     '$id' and username = '$usr'";
     $con->query($sql);
-    header("location: ?Blogdisplay/userhome");
+    header("location: ?BlogDisplay/userhome");
   }
 }
 ?>

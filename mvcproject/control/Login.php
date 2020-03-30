@@ -1,44 +1,44 @@
 <!--
    * @file
-   * this  file contains all functions related to login.
+   * This  file contains all functions related to login.
  -->
 <?php
 /**
-  *  this class is used for control all the functionality related to user login.
+  *  This class is used for control all the functionality related to user login.
 */
 
-class Logincontrol {
+class LoginControl {
 	/**
-	   * this function is used to redirect userhome page if username is setup else
-	   * display login page.
+	   * This function is used to redirect userhome page if username is setup else
+	   * Display login page.
 	*/
 	function login() {
 		if(isset($_SESSION['user_name'])) {
-			header("location: ?Blogdisplay/userhome");
+			header("location: ?BlogDisplay/userhome");
 		}
 		include('view/login.php');
 	}
 	/**
-	   * this function will check login validity,if correct redirect to user home
-	   * -view else redirect to again login page.
+	   * This function will check login validity,if correct redirect to user home
+	   * -View else redirect to again login page.
 	*/
 	function logincheck() {
     include('model/Login.php');
-		$obj = new Loginmodel;
+		$obj = new LoginModel;
 		$return_value = $obj->login();
     if($return_value == null) {
 			include('view/login.php');
 		}
     else {
 		  $_SESSION['user_name'] = $return_value['username'];
-			header("location:?Blogdisplay/home");
+			header("location:?BlogDisplay/home");
 		}
 	}
-	// function used for logout and destroy session variable.
+	// This function used for logout and destroy session variable.
 	function logout() {
 		session_destroy();
 		echo "logout succesfull";
-		header("location:?Blogdisplay/home");
+		header("location:?BlogDisplay/home");
   }
 }
 ?>
