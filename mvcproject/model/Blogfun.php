@@ -81,7 +81,6 @@ class Blogfunmodel {
   */
   function editshow($id) {
     include 'blogconnection.php';
-
     $sql = "SELECT * FROM blog WHERE bid = '$id'";
     $res = $con->query($sql);
     if(mysqli_num_rows($res) == 0) {
