@@ -1,8 +1,0 @@
-<IfModule mod_rewrite.c>
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}.php -f
-#RewriteRule ^(.*)$ $1.php
-#RewriteRule ^index/login index.php?action=loginpage [NC,L]
-RewriteRule ^(.*)$ index.php?action=$1" [QSA,L]
-</IfModule>

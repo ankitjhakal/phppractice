@@ -4,13 +4,13 @@
  -->
 <?php
 
-$host = "localhost";
+$host = "vh.com";
 $user = "root";
 $pass = "";
 $db = "mysql1";
-$conn = mysqli_connect($host, $user, $pass, $db);
+$con = mysqli_connect($host, $user, $pass, $db);
 
-if(!$conn) {
+if(!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 session_start();
