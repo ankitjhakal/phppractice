@@ -1,7 +1,6 @@
 <?php
 namespace Controller;
 use \Model\BlogFunctionModel;
-use \View\EditView;
 /**
   * This class is used for control all the functionality related to blog handling.
 */
@@ -47,8 +46,6 @@ class BlogFunction {
       if($_SESSION['user_name'] == $row['username']) {
         $res = $obj->editshow($id);
         include('view/EditView.php');
-        $obj = new EditView;
-        $obj->edit($res);
       }
       else {
         echo "<h1>Unauthenticated user<h1>";

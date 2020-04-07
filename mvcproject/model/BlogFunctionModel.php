@@ -1,6 +1,5 @@
 <?php
 namespace Model;
-use \View\BlogView;
 /**
   * This class contains functions  used for fetching data of blogs, storing data
   * Of a blog again in database.
@@ -19,8 +18,7 @@ class BlogFunctionModel {
     if(mysqli_num_rows($res) == 0) {
       echo "<h1> blog not found</h1>";
     }
-    $obj = new BlogView;
-    $obj->show($res);
+    include('view/BlogView.php');
   }
   // This function is used to store blog form data in database.
   function add() {

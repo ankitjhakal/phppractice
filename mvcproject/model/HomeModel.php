@@ -1,7 +1,5 @@
 <?php
 namespace Model;
-use \View\HomeView;
-use \View\UserHome;
 /**
   * This class contains functions  used  to fetch data of user's, all user
 	* And display user's blogpage or homepage.
@@ -13,8 +11,7 @@ class HomeModel {
 		include 'blogconnection.php';
 		$sql = "SELECT * FROM blog order by bid DESC";
 		$res = $con->query($sql);
-		$obj = new HomeView;
-		$obj->show($res);
+    include('view/HomeView.php');
 	}
 	//This function is used to fetch particular user data for displaying  user's home page.
 	function userhome($usr) {
@@ -22,8 +19,8 @@ class HomeModel {
 		// Fetch all blogs of a particular user.
 		$sql = "SELECT * FROM blog WHERE username ='$usr'";
 		$res = $con->query($sql);
-		$obj = new UserHome;
-		$obj->show($res);
+		include('view/UserHome.php');
+
 	}
 }
 ?>

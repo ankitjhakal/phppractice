@@ -1,6 +1,3 @@
-<?php
-namespace View;
- ?>
 <!--
   * @file
   * This file used to show particular blog edit form.
@@ -11,18 +8,7 @@ namespace View;
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
 <body>
-
 <?php
-/**
-  * This class is used to display particular blog edit form.
-*/
-class EditView {
-  /**
-     * This function is used to show blog edit form with previous data.
-     * @param
-     * @res array of blog's all information.
-  */
-  function edit($res) {
     while ($row = $res->fetch_assoc()) {
       echo "<div class='container'>";
       echo "<h2>Please enter the data for edit your blog.</h2>";
@@ -35,8 +21,6 @@ class EditView {
       echo "<br><input type='submit' name ='submit' class='btn btn-primary' value='submit' />";
       echo "</form></div>";
     }
-  }
-}
 ?>
 </body>
 </html>
