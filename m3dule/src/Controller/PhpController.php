@@ -4,7 +4,7 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Controller\ControllerBase;
-use \Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -18,93 +18,102 @@ class PhpController extends ControllerBase {
   */
   public function movie_list() {
     $form = $this->formBuilder()->getForm('Drupal\m3dule\Form\FilterByName');
-
     $form_rendered = \Drupal::service('renderer')->render($form);
-    $movie = \Drupal::request()->query->get('word');
-    // Query fired to fetch all node ids of movie content type.
+    $name = \Drupal::request()->query->get('word');
+    //Query fired to fetch all node ids of movie content type.
+    $bundle = 'actor';
+    $query = \Drupal::entityQuery('node')
+     ->condition('status', 1)
+     ->condition('type', $bundle)
+     ->condition('title', $name, 'CONTAINS');
+    $act_id = $query->execute();
     $bundle = 'movie';
-    if($movie!=NULL) {
-      // kint($movie);
-      $query = \Drupal::entityQuery('node')
-          ->condition('status', 1)
-          ->condition('type', $bundle)
-          ->condition('title', $movie, 'CONTAINS');
-          // ->condition('field_paragraph', $movie, 'CONTAINS');
-    // $or = $query->orConditionGroup();
-    // $query->condition($or);
+    if(empty($act_id) && $name) {
+     $query = \Drupal::entityQuery('node')
+         ->condition('status', 1)
+         ->condition('type', $bundle)
+         ->condition('title', $name, 'CONTAINS');
+    }
+    elseif(!empty($act_id) && $name) {
+     $query = \Drupal::entityQuery('node')
+       ->condition('status', 1)
+       ->condition('type', $bundle)
+       ->condition('field_paragraph.entity:paragraph.field_actor.target_id',$act_id);
     }
     else {
-      $query = \Drupal::entityQuery('node')
-      ->condition('status', 1)
-      ->condition('type', $bundle)
-      ->sort('field_release_date', 'DESC');
+     $query = \Drupal::entityQuery('node')
+     ->condition('status', 1)
+     ->condition('type', $bundle)
+     ->sort('field_release_date', 'DESC');
     }
     $nids = $query->execute();
-    if (empty($nids)) {
-      $data = array("#markup" => "No Results Found");
-      return $data;
+    if(empty($nids)) {
+     drupal_set_message("No Results Found");
+     return $this->redirect('m3dule_movie');
+
     }
     else {
-      // Load all nids through this fucntion.
-      $nodes = entity_load_multiple('node', $nids);
-      $items = array();
-      $actor = array();
-      // Foreach for fetching all fields data and stored in an array $items
-      foreach($nodes as $node) {
-        $mid = $node->id();
-        $node_title = $node->title->value;
-        $node_body = $node->get('body')->value;
-        $date = $node->get('field_release_date')->value;
-        $ratings = $node->field_ratings->getValue();
-        $rating = $ratings[0]['rating'];
-        $rating = $rating/20;
-        $rating = $rating."/"."5";
-        $node_image_fid = $node->get('field_movie_poster')->target_id;
-        if (!is_null($node_image_fid)) {
-          $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
-          $image_entity_url = $image_entity->url();
-        }
-        else {
-          $image_entity_url = "/sites/default/files/default_images/obama.jpg";
-        }
-        // To access paragraph field using it's target id.
-        $target_id = $node->get('field_paragraph')->target_id;
-        $paragraph = Paragraph::load($target_id);
-        $values = array();
-        // Get all the values of node id from field actor.
-        $array = $paragraph->field_actor->getValue();
-        foreach($array as $value) {
-          if(isset($value['target_id'])) {
-            $values[] = $value['target_id'];
-          }
-        }
-        $j = 0;
-        $actor = array();
-        $url = array();
-        // Fetch actor name after loading a node and url to attach with actorname.
-        foreach($values as $value) {
-          $node_details = Node::load($value);
-          $actor[$j]['name'] = $node_details->title->value;
-          $actor[$j]['urls'] = '/movielist/node/'.$value;
-          $j++;
-        }
-        $items[] = [
-          'name' => $node_title,
-          'url' => $image_entity_url,
-          'desc' => $node_body,
-          'date' => $date,
-          'rating' => $rating,
-          'cast' => $actor,
-          'url_movie' => "/node/".$mid,
-        ];
-      }
-      // Return an renderable array to display movie_list applying special theme for page.
-      return array(
-        '#theme' => 'movie_list',
-        '#form' => $form_rendered,
-        '#items' => $items,
-        '#title' => 'our movies list',
-      );
+     // Load all nids through this fucntion.
+     $nodes = entity_load_multiple('node', $nids);
+     $items = array();
+     $actor = array();
+     // Foreach for fetching all fields data and stored in an array $items
+     foreach($nodes as $node) {
+       $mid = $node->id();
+       $node_title = $node->title->value;
+       $node_body = $node->get('body')->value;
+       $date = $node->get('field_release_date')->value;
+       $ratings = $node->field_ratings->getValue();
+       $rating = $ratings[0]['rating'];
+       $rating = $rating/20;
+       $rating = $rating."/"."5";
+       $node_image_fid = $node->get('field_movie_poster')->target_id;
+       if (!is_null($node_image_fid)) {
+         $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
+         $image_entity_url = $image_entity->url();
+       }
+       else {
+         $image_entity_url = "/sites/default/files/default_images/obama.jpg";
+       }
+       // To access paragraph field using it's target id.
+       $target_id = $node->get('field_paragraph')->target_id;
+       $paragraph = Paragraph::load($target_id);
+       $values = array();
+       // Get all the values of node id from field actor.
+       $array = $paragraph->field_actor->getValue();
+       foreach($array as $value) {
+         // kint($value);
+         if(isset($value['target_id'])) {
+           $values[] = $value['target_id'];
+         }
+       }
+       $j = 0;
+       $actor = array();
+       $url = array();
+       // Fetch actor name after loading a node and url to attach with actorname.
+       foreach($values as $value) {
+         $node_details = Node::load($value);
+         $actor[$j]['name'] = $node_details->title->value;
+         $actor[$j]['urls'] = '/movielist/node/'.$value;
+         $j++;
+       }
+       $items[] = [
+         'name' => $node_title,
+         'url' => $image_entity_url,
+         'desc' => $node_body,
+         'date' => $date,
+         'rating' => $rating,
+         'cast' => $actor,
+         'url_movie' => "/node/".$mid,
+       ];
+     }
+     // Return an renderable array to display movie_list applying special theme for page.
+     return array(
+       '#theme' => 'movie_list',
+       '#form' => $form_rendered,
+       '#items' => $items,
+       '#title' => 'our movies list',
+     );
     }
   }
   /**
@@ -201,11 +210,11 @@ class PhpController extends ControllerBase {
     if(empty($m_ids)) {
       $data = array("#markup" => "No Results Found");
     }
-    else{
+    else {
       $nodes = entity_load_multiple('node', $m_ids);
       $items = array();
       $actor = array();
-      foreach($nodes as $node){
+      foreach($nodes as $node) {
         $mid = $node->id();
         $node_title = $node->title->value;
         $node_image_fid = $node->get('field_movie_poster')->target_id;
