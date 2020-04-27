@@ -1,0 +1,34 @@
+<?php
+
+/**
+   * Implemetation of hook_page_attachments function.
+   * This function is used to attach a file to a set or subset of pages.
+   * @param  $page an array of page on which file will be attached.
+*/
+
+function m3dule_page_attachments(array &$page) {
+  $page['#attached']['library'][] = 'm3dule/m3dule_css';
+}
+
+/**
+   * Implemetation of hook_theme function.
+   * This function is used to return a renderable array for different themes.
+   * @param  $existing, $type, $theme, $path
+   * @return mixed
+*/
+function m3dule_theme($existing, $type, $theme, $path) {
+  return array(
+    'movie_list' => array(
+      'variables' => array('items' => array(), 'form' => array(), 'title' => '')
+    ),
+    'actor_list' => array(
+      'variables' => array('items' => array(), 'title' => '')
+    ),
+    'actor_movies_list' => array(
+      'variables' => array('items' => array(), 'title' => '')
+    ),
+    'filterbyname' => array(
+      'render element' => 'form',
+    ),
+  );
+}

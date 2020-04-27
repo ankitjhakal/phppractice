@@ -1,0 +1,39 @@
+m3dule_movie:
+  path: '/m3dule/movielist'
+  defaults:
+    _controller: '\Drupal\m3dule\Controller\PhpController::movie_list'
+    _title: 'movies database'
+  requirements:
+    _permission: 'access content'
+
+m3dule_actor:
+  path: '/m3dule/actorlist'
+  defaults:
+    _controller: '\Drupal\m3dule\Controller\PhpController::actor_list'
+    _title: 'actors list with their recent movies'
+  requirements:
+    _permission: 'access content'
+
+m3dule_actor_movielist:
+  path: '/movielist/{type}/{node}'
+  defaults:
+    _controller: '\Drupal\m3dule\Controller\PhpController::actor_movieslist'
+    _title: 'all movies of an actor'
+  requirements:
+    _permission: 'access content'
+
+m3dule_costar:
+  path: '/co-star/{movie}/{nid}'
+  defaults:
+    _controller: '\Drupal\m3dule\Controller\PhpController::costar'
+    _title: 'co-star detail'
+  requirements:
+    _permission: 'access content'
+
+m3dule_form:
+  path: '/filter'
+  defaults:
+    _form: '\Drupal\m3dule\Form\FilterByName'
+    _title: 'Movies list'
+  requirements:
+    _permission: 'access content'

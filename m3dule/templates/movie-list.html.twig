@@ -1,0 +1,31 @@
+<div>
+{{ form }}
+</div><br>
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Movie_name</th>
+      <th scope="col">Movie_poster</th>
+      <th scope="col">Description</th>
+      <th scope="col">Release_date</th>
+      <th scope="col">cast</th>
+      <th scope="col">ratings</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+      <tr>
+        <td><a href={{ item.url_movie }}>{{ item.name }}</td>
+        <td><img  width=100px src={{ item.url }} class="img-thumbnail"></td>
+        <td>{{ item.desc }}</td>
+        <td>{{ item.date }}</td>
+        <td class="cast">
+        {% for x in item.cast %}
+          <a href={{ x.urls }}>{{ x.name }}</a><br>
+        {% endfor %}
+        </td>
+        <td>{{ item.rating }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
