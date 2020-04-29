@@ -10,12 +10,12 @@
   <tbody>
     {% for item in items %}
       <tr>
-        <td><a href="/node/{{ item.movie_url }}">{{ item.movie_name }}</td>
+        <td><a class="atag" href="/node/{{ item.movie_url }}">{{ item.movie_name }}</td>
         <td><img width=100px src={{ item.image_path }} class="img-thumbnail"></td>
         <td>{{ item.actor_role }}</td>
         <td class="cast">
         {% for x in item.costars %}
-          <a href="#" class="costar-link" data-nid={{ x.actor_id }} movie-nid={{ item.movie_url }}>{{ x.name }}</a><br>
+          <a class="atag" href="#" class="costar-link" data-nid={{ x.actor_id }} movie-nid={{ item.movie_url }}>{{ x.name }}</a><br>
         {% endfor %}
         </td>
       </tr>
