@@ -15,7 +15,7 @@
         <td>{{ item.actor_role }}</td>
         <td class="cast">
         {% for x in item.costars %}
-          <a class="atag" href="#" class="costar-link" data-nid={{ x.actor_id }} movie-nid={{ item.movie_url }}>{{ x.name }}</a><br>
+          <a class="atag costar-link" href="#"  data-nid={{ x.actor_id }} movie-nid={{ item.movie_url }}>{{ x.name }}</a><br>
         {% endfor %}
         </td>
       </tr>

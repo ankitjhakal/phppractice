@@ -2,11 +2,11 @@
 	color: black;
 }
 .atag:hover {
-	color: white;
+	color: red;
 }
 .dialog-off-canvas-main-canvas {
-    color: #fff;
-    background: #19aa8d;
+    color:black;
+    background: rgba(57, 230, 16, 0.15); ;
     font-family: 'Roboto', sans-serif;
 }
 .glyphicon-star {

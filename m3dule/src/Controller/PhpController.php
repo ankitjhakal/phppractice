@@ -215,9 +215,6 @@ class PhpController extends ControllerBase {
      * @return mixed
   */
   public function actor_movieslist($type,  $node) {
-    // Fetch node id using id() function on object $node.
-
-    // $nid = $node->id();
     $node_details = Node::load($node);
     $list_title = $node_details->title->value;
     $list_title = 'listed movies of '.$list_title;
@@ -272,8 +269,8 @@ class PhpController extends ControllerBase {
           }
           // Else fetched costar of movie with its id.
           else {
-            $Coactor[$j]['name'] = $node_details->title->value;
-            $Coactor[$j]['actor_id'] = $value;
+            $actor[$j]['name'] = $node_details->title->value;
+            $actor[$j]['actor_id'] = $value;
             $j++;
           }
           $no++;
@@ -282,7 +279,7 @@ class PhpController extends ControllerBase {
           'movie_name' => $node_title,
           'image_path' => $image_entity_url,
           'actor_role' => $actor_role,
-          'costars' => $Coactor,
+          'costars' => $actor,
           'movie_url' =>  $mid,
         ];
       }
