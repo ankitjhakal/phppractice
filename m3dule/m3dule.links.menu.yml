@@ -1,0 +1,13 @@
+m3dule_movie:
+  title: 'Movies_List'
+  description: 'List of all movies'
+  route_name: m3dule_movie
+  menu_name: main
+  weight: 11
+
+m3dule_actor:
+  title: 'Actors_List'
+  description: 'List of all actors'
+  route_name: m3dule_actor
+  menu_name: main
+  weight: 11
