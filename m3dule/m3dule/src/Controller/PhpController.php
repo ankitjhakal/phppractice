@@ -68,9 +68,15 @@ class PhpController extends ControllerBase {
        $node_title = $node->title->value;
        $node_body = $node->get('body')->value;
        $date = $node->get('field_release_date')->value;
-       $ratings = $node->field_ratings->getValue();
-       $rating = $ratings[0]['rating'];
-       $rating = $rating/20;
+       $database = \Drupal::database();
+       $query = $database->query("SELECT value FROM {votingapi_result}
+          where function = 'vote_average' and entity_id = $mid");
+       $result = $query->fetchAll();
+       $rating = $result[0]->value/20;
+       $halfStarFlag = false;
+       if($result[0]->value%20 !=0) {
+         $halfStarFlag = true;
+       }
        $node_image_fid = $node->get('field_movie_poster')->target_id;
        if (!is_null($node_image_fid)) {
          $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
@@ -109,6 +115,7 @@ class PhpController extends ControllerBase {
          'rating' => $rating,
          'cast' => $actor,
          'url_movie' => "/node/".$mid,
+         'halfStarFlag' => $halfStarFlag,
        ];
      }
      // Return an renderable array to display movie_list applying special theme for page.
@@ -152,6 +159,15 @@ class PhpController extends ControllerBase {
       // Foreach for fetching all fields data and stored in an array $items
       foreach($actor_nodes as $node) {
         $nid = $node->id();
+        $database = \Drupal::database();
+        $query = $database->query("SELECT value FROM {votingapi_result}
+           where function = 'vote_average' and entity_id = $nid");
+        $result = $query->fetchAll();
+        $rating = $result[0]->value/20;
+        $halfStarFlag = false;
+        if($result[0]->value%20 !=0) {
+          $halfStarFlag = true;
+        }
         $node_title = $node->title->value;
         $node_body = $node->get('body')->value; //can use getString() getValue() instead of value
         $ratings = $node->field_rating->getValue();
@@ -171,6 +187,7 @@ class PhpController extends ControllerBase {
           'desc' => $node_body,
           'ratings' => $rating,
           'actor_url' => "/node/".$nid,
+          'halfStarFlag' => $halfStarFlag,
         ];
       }
       // Added two columns of recent movie name with its url.
@@ -180,7 +197,7 @@ class PhpController extends ControllerBase {
           $node =  Node::load($value);
           $movie_title = $node->title->value;
           $items[$count]['recent_movie'] = $movie_title;
-          $items[$count]['movie_url'] = "node/".$value;
+          $items[$count]['movie_url'] = "/node/".$value;
           $count = $count+1;
         }
       }
@@ -198,9 +215,6 @@ class PhpController extends ControllerBase {
      * @return mixed
   */
   public function actor_movieslist($type,  $node) {
-    // Fetch node id using id() function on object $node.
-
-    // $nid = $node->id();
     $node_details = Node::load($node);
     $list_title = $node_details->title->value;
     $list_title = 'listed movies of '.$list_title;
