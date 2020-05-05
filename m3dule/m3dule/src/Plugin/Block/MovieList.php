@@ -4,7 +4,6 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\node\Entity\Node;
 use Drupal\m3dule\Controller\PhpController;
-use Drupal\node\NodeInterface;
 /**
  * Provides a 'Movie' Block.
  *
@@ -19,12 +18,6 @@ class MovieList extends BlockBase {
    * {@inheritdoc}
    */
   public function actor_movies_list($nid=NULL) {
-    // $node = \Drupal::routeMatch()->getParameter('node');
-    // $nid = $node->id();
-    // kint($nid);
-    // $obj = new PhpController ();
-    // $arr = $obj->actor_movieslist('actor', $nid);
-    // kint($arr);
     $node_details = Node::load($nid);
     $list_title = $node_details->title->value;
     $list_title = 'listed movies of '.$list_title;
