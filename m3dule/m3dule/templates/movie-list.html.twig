@@ -15,19 +15,22 @@
   <tbody>
     {% for item in items %}
       <tr>
-        <td><a href={{ item.url_movie }}>{{ item.name }}</td>
+        <td><a class="atag" href={{ item.url_movie }}>{{ item.name }}</td>
         <td><img  width=100px src={{ item.url }} class="img-thumbnail"></td>
-        <td>{{ item.desc }}</td>
+        <td>{{ item.desc|render|striptags }}</td>
         <td>{{ item.date }}</td>
         <td class="cast">
         {% for x in item.cast %}
-          <a href={{ x.urls }}>{{ x.name }}</a><br>
+          <a class="atag" href={{ x.urls }}>{{ x.name }}</a><br>
         {% endfor %}
         </td>
         <td width=103px>
         {% for star in range(1,item.rating) %}
           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
         {% endfor %}
+        {% if item.halfStarFlag %}
+          <i class="glyphicon glyphicon-star half"></i>
+        {% endif %}
         </td>
       </tr>
     {% endfor %}
