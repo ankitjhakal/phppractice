@@ -17,16 +17,20 @@ class PhpController extends ControllerBase {
      * @return mixed
   */
   public function movie_list() {
+    // To get form object
     $form = $this->formBuilder()->getForm('Drupal\m3dule\Form\FilterByName');
+    // Get render html of form
     $form_rendered = \Drupal::service('renderer')->render($form);
+    // Get query parameter value
     $name = \Drupal::request()->query->get('word');
-    //Query fired to fetch all node ids of movie content type.
+    //Query fired to fetch node id of actor content type where title equal to $name.
     $bundle = 'actor';
     $query = \Drupal::entityQuery('node')
      ->condition('status', 1)
      ->condition('type', $bundle)
      ->condition('title', $name, 'CONTAINS');
     $act_id = $query->execute();
+    //Query fired to fetch node id of movie content type where title equal to $name.
     $bundle = 'movie';
     if(empty($act_id) && $name) {
      $query = \Drupal::entityQuery('node')
@@ -34,6 +38,7 @@ class PhpController extends ControllerBase {
          ->condition('type', $bundle)
          ->condition('title', $name, 'CONTAINS');
     }
+    //Query fired to fetch node ids of movie where actor node id existin paragraph field.
     elseif(!empty($act_id) && $name) {
      $query = \Drupal::entityQuery('node')
        ->condition('status', 1)
@@ -66,7 +71,6 @@ class PhpController extends ControllerBase {
        $ratings = $node->field_ratings->getValue();
        $rating = $ratings[0]['rating'];
        $rating = $rating/20;
-       $rating = $rating."/"."5";
        $node_image_fid = $node->get('field_movie_poster')->target_id;
        if (!is_null($node_image_fid)) {
          $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
@@ -153,7 +157,6 @@ class PhpController extends ControllerBase {
         $ratings = $node->field_rating->getValue();
         $rating = $ratings[0]['rating'];
         $rating = $rating/20;
-        $rating = $rating."/"."5";
         $node_image_fid = $node->get('field_actor_image')->target_id;
         if(!is_null($node_image_fid)) {
           $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
@@ -167,7 +170,7 @@ class PhpController extends ControllerBase {
           'url' => $image_entity_url,
           'desc' => $node_body,
           'ratings' => $rating,
-          'actor_url' => "/movielist/node/".$nid,
+          'actor_url' => "/node/".$nid,
         ];
       }
       // Added two columns of recent movie name with its url.
@@ -194,12 +197,14 @@ class PhpController extends ControllerBase {
      * @param  $type type of id       $node  id of a node.
      * @return mixed
   */
-  public function actor_movieslist($type, NodeInterface $node) {
+  public function actor_movieslist($type,  $node) {
     // Fetch node id using id() function on object $node.
-    $nid = $node->id();
-    $node_details = Node::load($nid);
+
+    // $nid = $node->id();
+    $node_details = Node::load($node);
     $list_title = $node_details->title->value;
     $list_title = 'listed movies of '.$list_title;
+    $nid = $node_details->nid->value;
     $bundle = 'movie';
     $query = \Drupal::entityQuery('node')
         ->condition('status', 1)

@@ -8,7 +8,7 @@
       <th scope="col">Movie_poster</th>
       <th scope="col">Description</th>
       <th scope="col">Release_date</th>
-      <th scope="col">cast</th>
+      <th width=120px scope="col">cast</th>
       <th scope="col">ratings</th>
     </tr>
   </thead>
@@ -24,7 +24,11 @@
           <a href={{ x.urls }}>{{ x.name }}</a><br>
         {% endfor %}
         </td>
-        <td>{{ item.rating }}</td>
+        <td width=103px>
+        {% for star in range(1,item.rating) %}
+          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        {% endfor %}
+        </td>
       </tr>
     {% endfor %}
   </tbody>
