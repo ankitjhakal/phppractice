@@ -9,7 +9,7 @@
   </thead>
   <tbody>
     {% for item in items %}
-      <tr>
+      <tr class="supercss">
         <td><a class="atag" href="/node/{{ item.movie_url }}">{{ item.movie_name }}</td>
         <td><img width=100px src={{ item.image_path }} class="img-thumbnail"></td>
         <td>{{ item.actor_role }}</td>

@@ -92,10 +92,13 @@
     {% if title %}
     <div class="supercomment">
       {% if author %}
-        <h4>{{ content }}</h4>
-        <h5>{{ submitted }}</h5>
-      {% endif %}
-    <div>
+        <h4>{{ content.comment_body }}</h4>
+        {% if not user.isAnonymous() %}
+          <h4>{{ content.links }}</h4>
+        {% endif %}
+        <h4>{{ submitted }}</h4>
+    {% endif %}
+    </div>
     {% endif %}
   </div>
 </article>

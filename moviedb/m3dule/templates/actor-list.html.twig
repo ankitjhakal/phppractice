@@ -10,7 +10,7 @@
   </thead>
   <tbody>
     {% for item in items %}
-      <tr>
+      <tr class="supercss">
         <td><a class="atag" href={{ item.actor_url }}>{{ item.name }}</td>
         <td><img width=100px src={{ item.url }} class="img-thumbnail"></td>
         <td>{{ item.desc|render|striptags }}</td>

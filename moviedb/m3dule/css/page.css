@@ -4,6 +4,18 @@
 .atag:hover {
 	color: red;
 }
+thead {
+	color:white;
+	background-color: black;
+}
+.supercss {
+	transition: all .2s ease;
+	background-color: #e8e8e8;
+}
+.supercss:hover {
+	background-color: #dcdcdc;
+	transform: scale(1.01);
+}
 .supercomment {
 	border-left: 2px solid #5c5c5c;
 	transition: all .2s ease;

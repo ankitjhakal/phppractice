@@ -67,5 +67,8 @@ function m3dule_theme($existing, $type, $theme, $path) {
     'filterbyname' => array(
       'render element' => 'form',
     ),
+    'link_block' => array(
+      'variables' => array('loginlink' => '', 'registerlink' => ''),
+    ),
   );
 }
