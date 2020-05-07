@@ -38,6 +38,54 @@
 //   }
 // }
 /**
+ * Implements hook_update_N().
+ */
+ /**
+  * Defines the advertiser entity.
+  *
+  * @ingroup advertiser
+  *
+  * @ContentEntityType(
+  *   id = "advertiser",
+  *   label = @Translation("advertiser"),
+  *   base_table = "advertiser",
+  *   entity_keys = {
+  *     "id" = "id",
+  *     "uuid" = "uuid",
+  *   },
+  * )
+  */
+function m3dule_update_8701() {
+  \Drupal::entityDefinitionUpdateManager()->installEntityType(new ConfigEntityType([
+    'id' => 'advertiser',
+    'label' => new TranslatableMarkup('advertiser'),
+    'config_prefix' => 'resource',
+    // 'admin_permission' => 'administer rest resources',
+    'label_callback' => 'Advertiser',
+    'entity_keys' => ['id' => 'id', 'uuid' => 'uuid'],
+    'config_export' => [
+      'id',
+      'plugin_id',
+      'granularity',
+      'configuration',
+    ],
+  ]));
+}
+/**
+ * Update 8001 - Create maestro_process_status entity.
+ */
+// function m3dule_update_8001() {
+//   //check if the table exists first.  If not, then create the entity.
+//   if(!db_table_exists('advertiser')) {
+//     \Drupal::entityTypeManager()->clearCachedDefinitions();
+//     \Drupal::entityDefinitionUpdateManager()
+//       ->installEntityType(\Drupal::entityTypeManager()->getDefinition('advertiser'));
+//   }
+//   else {
+//     return 'Process Status entity already exists';
+//   }
+// }
+/**
    * Implemetation of hook_page_attachments function.
    * This function is used to attach a file to a set or subset of pages.
    * @param  $page an array of page on which file will be attached.

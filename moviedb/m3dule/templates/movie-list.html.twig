@@ -25,9 +25,13 @@
         {% endfor %}
         </td>
         <td width=103px>
-        {% for star in range(1,item.rating) %}
+        {% if item.rating>=2 %}
+          {% for star in range(1,item.rating) %}
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+          {% endfor %}
+        {% else %}
           <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-        {% endfor %}
+        {% endif %}
         {% if item.halfStarFlag %}
           <i class="glyphicon glyphicon-star half"></i>
         {% endif %}

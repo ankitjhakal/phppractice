@@ -22,6 +22,9 @@ class PhpController extends ControllerBase {
     $form_rendered = \Drupal::service('renderer')->render($form);
     // Get query parameter value
     $name = \Drupal::request()->query->get('word');
+    if($name == " ") {
+      $name=NULL;
+    }
     //Query fired to fetch node id of actor content type where title equal to $name.
     $bundle = 'actor';
     $query = \Drupal::entityQuery('node')
@@ -137,22 +140,23 @@ class PhpController extends ControllerBase {
         ->condition('status', 1)
         ->condition('type', $bundle);
     $nids = $query->execute();
-    $m_ids = array();
-    // Fetched the recent movie node id of an actor which contains that actor nodeid.
-    foreach($nids as $nid) {
-      $bundle = 'movie';
-      $query = \Drupal::entityQuery('node')
-          ->condition('status', 1)
-          ->condition('type', $bundle)
-          ->condition('field_paragraph.entity:paragraph.field_actor.target_id',$nid)
-          ->range(0, 1)
-          ->sort('field_release_date', 'DESC');
-      $m_ids[] = $query->execute();
-    }
     if (empty($nids)) {
-      $data = array("#markup" => "No Results Found");
+      drupal_set_message("No Results Found");
+      return $this->redirect('m3dule_actor');
     }
     else {
+      $m_ids = array();
+      // Fetched the recent movie node id of an actor which contains that actor nodeid.
+      foreach($nids as $nid) {
+        $bundle = 'movie';
+        $query = \Drupal::entityQuery('node')
+        ->condition('status', 1)
+        ->condition('type', $bundle)
+        ->condition('field_paragraph.entity:paragraph.field_actor.target_id',$nid)
+        ->range(0, 1)
+        ->sort('field_release_date', 'DESC');
+        $m_ids[] = $query->execute();
+      }
       $actor_nodes = entity_load_multiple('node', $nids);
       $items = array();
       // Foreach for fetching all fields data and stored in an array $items
@@ -226,7 +230,8 @@ class PhpController extends ControllerBase {
         ->sort('field_release_date', 'DESC');
     $m_ids = $query->execute();
     if(empty($m_ids)) {
-      $data = array("#markup" => "No Results Found");
+      drupal_set_message("No Results Found");
+      return $this->redirect('m3dule_actor_movielist');
     }
     else {
       $nodes = entity_load_multiple('node', $m_ids);
