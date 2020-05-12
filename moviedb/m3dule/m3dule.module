@@ -55,22 +55,6 @@
   *   },
   * )
   */
-function m3dule_update_8701() {
-  \Drupal::entityDefinitionUpdateManager()->installEntityType(new ConfigEntityType([
-    'id' => 'advertiser',
-    'label' => new TranslatableMarkup('advertiser'),
-    'config_prefix' => 'resource',
-    // 'admin_permission' => 'administer rest resources',
-    'label_callback' => 'Advertiser',
-    'entity_keys' => ['id' => 'id', 'uuid' => 'uuid'],
-    'config_export' => [
-      'id',
-      'plugin_id',
-      'granularity',
-      'configuration',
-    ],
-  ]));
-}
 /**
  * Update 8001 - Create maestro_process_status entity.
  */

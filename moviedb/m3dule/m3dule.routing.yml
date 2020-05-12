@@ -30,10 +30,11 @@ m3dule_costar:
   requirements:
     _permission: 'access content'
 
-m3dule_form:
-  path: '/filter'
+
+m3dule.admin_settings:
+  path: '/admin/config/formtest'
   defaults:
-    _form: '\Drupal\m3dule\Form\FilterByName'
-    _title: 'Movies list'
+    _form: '\Drupal\m3dule\Form\TestForm'
+    _title: 'formtest configuration screen'
   requirements:
-    _permission: 'access content'
+    _permission: 'administer site configuration'

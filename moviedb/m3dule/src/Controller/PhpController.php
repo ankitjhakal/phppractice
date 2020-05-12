@@ -93,6 +93,7 @@ class PhpController extends ControllerBase {
        $values = array();
        // Get all the values of node id from field actor.
        $array = $paragraph->field_actor->getValue();
+       // kint($array);
        foreach($array as $value) {
          // kint($value);
          if(isset($value['target_id'])) {
@@ -182,7 +183,7 @@ class PhpController extends ControllerBase {
           $image_entity_url = $image_entity->url();
         }
         else {
-          $image_entity_url = "/sites/default/files/default_images/obama.jpg";
+          $image_entity_url = "/sites/default/files/default_images/obama.png";
         }
         $items[] = [
           'name' => $node_title,
@@ -246,7 +247,7 @@ class PhpController extends ControllerBase {
           $image_entity_url = $image_entity->url();
         }
         else {
-          $image_entity_url = "/sites/default/files/default_images/obama.jpg";
+          $image_entity_url = "/sites/default/files/default_images/obama.png";
         }
         $target_id = $node->get('field_paragraph')->target_id;
         $paragraph = Paragraph::load($target_id);
@@ -269,7 +270,12 @@ class PhpController extends ControllerBase {
           */
           if($value == $nid) {
             $roles = $paragraph->field_role->getValue();
-            $actor_role = $roles[$no]['value'];
+            if(isset($roles[$no]['value'])) {
+              $actor_role = $roles[$no]['value'];
+            }
+            else {
+              $actor_role='none';
+            }
           }
           // Else fetched costar of movie with its id.
           else {
@@ -279,6 +285,7 @@ class PhpController extends ControllerBase {
           }
           $no++;
         }
+        // kint($actor_role);
         $items[] = [
           'movie_name' => $node_title,
           'image_path' => $image_entity_url,
@@ -316,15 +323,21 @@ class PhpController extends ControllerBase {
       $node = Node::load($value);
       if($value == $nid) {
         $roles = $paragraph->field_role->getValue();
-        $role = $roles[$no]['value'];
+        if(isset($roles[$no]['value'])) {
+          $role = $roles[$no]['value'];
+        }
+        else {
+          $role='none';
+        }
         $node_title = $node->title->value;
         $node_image_fid = $node->get('field_actor_image')->target_id;
+        // kint($node_image_fid );
         if(!is_null($node_image_fid)) {
           $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
           $image_entity_url = $image_entity->url();
         }
         else {
-          $image_entity_url = "/sites/default/files/default_images/obama.jpg";
+          $image_entity_url = "/sites/default/files/default_images/obama.png";
         }
       }
       $no++;

@@ -29,12 +29,12 @@ class MovieList extends BlockBase {
         ->condition('field_paragraph.entity:paragraph.field_actor.target_id',$nid)
         ->sort('field_release_date', 'DESC');
     $m_ids = $query->execute();
+    $items = array();
     if(empty($m_ids)) {
-      $data = array("#markup" => "No Results Found");
+      $items['result'] = 'NO RESULT FOUND';
     }
     else {
       $nodes = entity_load_multiple('node', $m_ids);
-      $items = array();
       $actor = array();
       foreach($nodes as $node) {
         $mid = $node->id();
@@ -68,7 +68,12 @@ class MovieList extends BlockBase {
           */
           if($value == $nid) {
             $roles = $paragraph->field_role->getValue();
-            $actor_role = $roles[$no]['value'];
+            if(isset($roles[$no]['value'])) {
+              $actor_role = $roles[$no]['value'];
+            }
+            else {
+              $actor_role='none';
+            }
           }
           // Else fetched costar of movie with its id.
           else {
@@ -86,18 +91,19 @@ class MovieList extends BlockBase {
           'movie_url' =>  $mid,
         ];
       }
-      return array(
-        'theme' => 'actor_movies_list',
-        'items' => $items,
-        'title' => $list_title,
-      );
     }
+    return array(
+      'theme' => 'actor_movies_list',
+      'items' => $items,
+      'title' => $list_title,
+    );
   }
 
   public function build() {
     $node = \Drupal::routeMatch()->getParameter('node');
     $nid = $node->id();
     $data=$this->actor_movies_list($nid);
+    // kint($data);
     return array(
       '#theme' => $data['theme'],
       '#items' => $data['items'],
