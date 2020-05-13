@@ -32,9 +32,11 @@ m3dule_costar:
 
 
 m3dule.admin_settings:
-  path: '/admin/config/formtest'
+  path: '/admin/config/m3dule/adminsettings'
   defaults:
     _form: '\Drupal\m3dule\Form\TestForm'
     _title: 'formtest configuration screen'
   requirements:
     _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

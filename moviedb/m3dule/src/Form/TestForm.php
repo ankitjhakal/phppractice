@@ -64,7 +64,22 @@ class TestForm extends ConfigFormBase {
       $file = File::load($form_file[0]);
       $file->setPermanent();
       $file->save();
+      $image_entity = \Drupal\file\Entity\File::load($form_file[0]);
+      $image_entity_url = $image_entity->url();
+      // Add to file usage calculation.
+      // \Drupal::service('file.usage')->add;
     }
+    else {
+      $image_entity_url = "/sites/default/files/default_images/obama.png";
+    }
+    db_insert('form_list')
+      ->fields(array(
+        'title' => $form_state->getValue('title'),
+        'description' => $form_state->getValue('description'),
+        'image' => $image_entity_url,
+    ))
+    ->execute();
+
     $this->config('m3dule.settings')
       ->set('title', $form_state->getValue('title'))
       ->set('description', $form_state->getValue('description'))
