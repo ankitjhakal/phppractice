@@ -1,5 +1,6 @@
 .page-header {
-	background-color: #dcdcdc;
+	/* background-color: #dcdcdc; */
+	color:red;
 }
 /* .col-sm-12 {
     width: 100%;

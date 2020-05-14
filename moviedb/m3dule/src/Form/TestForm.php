@@ -36,7 +36,7 @@ class TestForm extends ConfigFormBase {
       '#default_value' => $config->get('title'),
     ];
     $form['description'] = [
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#title' => $this->t('Your Description'),
       '#default_value' => $config->get('description'),
     ];
@@ -45,7 +45,7 @@ class TestForm extends ConfigFormBase {
       '#title' => 'my file',
       '#name' => 'my_custom_file',
       '#description' => $this->t('my file description'),
-      '#default_value' => $config->get('my_file'),
+      '#default_value' => $config->get('image'),
       '#upload_location' => 'public://profile-pictures',
       '#upload_validators' => array(
           'file_validate_extensions' => array('gif png jpg jpeg'),
@@ -54,6 +54,19 @@ class TestForm extends ConfigFormBase {
     ];
     return parent::buildForm($form, $form_state);
   }
+
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $title = $form_state->getValue('title');
+    $desc = $form_state->getValue('description');
+    if (!preg_match("/^[a-zA-Z ]+$/i",$title)) {
+        $form_state->setErrorByName ('title', t('the %title is not valid.', array('%title' => $title)));
+    }
+    if (strlen($desc)<7) {
+        $form_state->setErrorByName ('description', t('the length of description should be greater than or equal to 7.'));
+    }
+  }
+
+
 
   /**
    * {@inheritdoc}

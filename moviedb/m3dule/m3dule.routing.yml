@@ -40,3 +40,11 @@ m3dule.admin_settings:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
+
+m3dule.listshow:
+  path: '/test'
+  defaults:
+    _controller: '\Drupal\m3dule\Controller\DataController::listshow'
+    _title: 'formtest '
+  requirements:
+    _permission: 'access content'

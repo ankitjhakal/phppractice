@@ -109,6 +109,9 @@ function m3dule_theme($existing, $type, $theme, $path) {
     'filterbyname' => array(
       'render element' => 'form',
     ),
+    'list' => array(
+      'variables' => array('items' => array(), 'title' => '')
+    ),
     'link_block' => array(
       'variables' => array('loginlink' => '', 'registerlink' => ''),
     ),
