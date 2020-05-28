@@ -14,6 +14,14 @@ m3dule_actor:
   requirements:
     _permission: 'access content'
 
+m3dule_testentity:
+  path: '/actorlist'
+  defaults:
+    _controller: '\Drupal\m3dule\Controller\TestentityController::testEntity'
+    _title: 'actors list with their recent movies'
+  requirements:
+    _permission: 'access content'
+
 m3dule_actor_movielist:
   path: '/movielist/{type}/{node}'
   defaults:
