@@ -102,7 +102,7 @@ class MovieList extends BlockBase {
   public function build() {
     $node = \Drupal::routeMatch()->getParameter('node');
     $nid = $node->id();
-    $data=$this->actor_movies_list($nid);
+    $data=$this->actor_movies_list('24');
     // kint($data);
     return array(
       '#theme' => $data['theme'],

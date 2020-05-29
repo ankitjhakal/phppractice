@@ -34,12 +34,16 @@ class WebVal extends WebformHandlerBase {
     $msg = $service->getresult($sid,"quiz");
     drupal_set_message($msg);
   }
-  /**
-   * Validate Query.
-   */
+
+  // public function validateForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
+  //   drupal_set_message(kint($form_state));
+  //   // $this->validateQuery($formState);
+  // }
+  // /**
+  //  * Validate Query.
+  //  */
   // private function validateQuery(FormStateInterface $formState) {
   //   $values = $formState->getValues('data');
-  //   kint($values);
   //   // kint($formState);
   //   $desc = explode(" ", $values['query']);
   //   // $desc = explode(" ", $values);

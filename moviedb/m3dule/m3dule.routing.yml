@@ -6,6 +6,15 @@ m3dule_movie:
   requirements:
     _permission: 'access content'
 
+
+m3dule_placeblock:
+  path: '/placeblock'
+  defaults:
+    _controller: '\Drupal\m3dule\Controller\BlockController::placeBlock'
+    _title: 'movieslist through block list '
+  requirements:
+    _permission: 'access content'
+
 m3dule_actor:
   path: '/m3dule/actorlist'
   defaults:
