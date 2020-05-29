@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Update 8001 - Create maestro_process_status entity.
+ */
+function advertiser_update_8201() {
+  //check if the table exists first.  If not, then create the entity.
+  if(!db_table_exists('advertiser_type')) {
+    \Drupal::entityTypeManager()->clearCachedDefinitions();
+    \Drupal::entityDefinitionUpdateManager()
+      ->installEntityType(\Drupal::entityTypeManager()->getDefinition('advertiser_type'));
+  }
+  else {
+    return 'Process Status entity already exists';
+  }
+}
+?>
