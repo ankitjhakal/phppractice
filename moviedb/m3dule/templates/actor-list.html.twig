@@ -31,3 +31,13 @@
     {% endfor %}
   </tbody>
 </table>
+
+<div class="pagination">
+  {% for i in range(1,no_of_pages) %}
+    {% if i == current_page %}
+      <a href="/m3dule/actorlist?q={{ i }}" class="active">{{ i }}</a>
+    {% else %}
+      <a href="/m3dule/actorlist?q={{ i }}">{{ i }}</a>
+    {% endif %}
+  {% endfor %}
+</div>

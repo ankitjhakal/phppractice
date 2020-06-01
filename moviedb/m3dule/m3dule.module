@@ -98,10 +98,10 @@ function m3dule_page_attachments(array &$page) {
 function m3dule_theme($existing, $type, $theme, $path) {
   return array(
     'movie_list' => array(
-      'variables' => array('items' => array(), 'form' => array(), 'title' => '')
+      'variables' => array('items' => array(), 'form' => array(), 'title' => '', 'no_of_pages' => '', 'current_page' => '')
     ),
     'actor_list' => array(
-      'variables' => array('items' => array(), 'title' => '')
+      'variables' => array('items' => array(), 'title' => '', 'no_of_pages' => '', 'current_page' => '')
     ),
     'actor_movies_list' => array(
       'variables' => array('items' => array(), 'title' => '')

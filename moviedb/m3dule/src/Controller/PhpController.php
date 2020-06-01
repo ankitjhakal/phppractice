@@ -5,7 +5,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use Drupal\image\Entity\ImageStyle;
 /**
   * This class contains functions for display page like actor listing,movielist.
 */
@@ -34,26 +34,42 @@ class PhpController extends ControllerBase {
     $act_id = $query->execute();
     //Query fired to fetch node id of movie content type where title equal to $name.
     $bundle = 'movie';
-    if(empty($act_id) && $name) {
-     $query = \Drupal::entityQuery('node')
+    if($name) {
+      // kint($act_id);
+      $query = \Drupal::entityQuery('node')
          ->condition('status', 1)
          ->condition('type', $bundle)
-         ->condition('title', $name, 'CONTAINS');
+         ->condition('title', $name, 'CONTAINS')
+         ->pager(2);
+      $res=$query->execute();
+      // kint($res);
+      if(!empty($act_id)) {
+        foreach ($act_id as $id) {
+         // code...
+          $query = \Drupal::entityQuery('node')
+            ->condition('status', 1)
+            ->condition('type', $bundle)
+            ->condition('field_paragraph.entity:paragraph.field_actor.target_id',$id);
+          $res=array_merge($res,$query->execute());
+
+        }
+        // kint($res);
+      }
+      $result = array_unique($res);
+      // kint($result);
+      $nids = $result;
     }
     //Query fired to fetch node ids of movie where actor node id existin paragraph field.
-    elseif(!empty($act_id) && $name) {
+    else {
      $query = \Drupal::entityQuery('node')
        ->condition('status', 1)
        ->condition('type', $bundle)
-       ->condition('field_paragraph.entity:paragraph.field_actor.target_id',$act_id);
+       ->sort('field_release_date', 'DESC')
+       ->pager(2);
+     $ids = $query->execute();
+     $nids = $ids;
     }
-    else {
-     $query = \Drupal::entityQuery('node')
-     ->condition('status', 1)
-     ->condition('type', $bundle)
-     ->sort('field_release_date', 'DESC');
-    }
-    $nids = $query->execute();
+    // kint($nids);
     if(empty($nids)) {
      drupal_set_message("No Results Found");
      return $this->redirect('m3dule_movie');
@@ -82,7 +98,8 @@ class PhpController extends ControllerBase {
        $node_image_fid = $node->get('field_movie_poster')->target_id;
        if (!is_null($node_image_fid)) {
          $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
-         $image_entity_url = $image_entity->url();
+         $image_entity_url = $image_entity->uri->value;
+         $image_entity_url = ImageStyle::load('thumbnail')->buildUrl($image_entity_url);
        }
        else {
          $image_entity_url = "/sites/default/files/default_images/obama.jpg";
@@ -121,13 +138,25 @@ class PhpController extends ControllerBase {
          'halfStarFlag' => $halfStarFlag,
        ];
      }
-     // Return an renderable array to display movie_list applying special theme for page.
-     return array(
-       '#theme' => 'movie_list',
-       '#form' => $form_rendered,
-       '#items' => $items,
-       '#title' => 'our movies list',
-     );
+     $path = base_path();
+      return [
+        'results' => array(
+          '#theme' => 'movie_list',
+          '#items' => $items,
+          '#title' => 'Movies list',
+          '#form' => $form_rendered,
+          '#path' => 'path'),
+      'pager' => [
+        '#type' => 'pager'
+        ],
+      ];
+     // Return an renderable array applying unique theme for page.
+     // return array(
+     //   '#theme' => 'movie_list',
+     //   '#items' => $items,
+     //   '#form' => $form_rendered,
+     //   '#title' => 'our movie list',
+     // );
     }
   }
   /**
@@ -180,7 +209,8 @@ class PhpController extends ControllerBase {
         $node_image_fid = $node->get('field_actor_image')->target_id;
         if(!is_null($node_image_fid)) {
           $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
-          $image_entity_url = $image_entity->url();
+          $image_entity_url = $image_entity->uri->value;
+          $image_entity_url = ImageStyle::load('thumbnail')->buildUrl($image_entity_url);
         }
         else {
           $image_entity_url = "/sites/default/files/default_images/obama.png";
@@ -206,11 +236,21 @@ class PhpController extends ControllerBase {
         }
       }
     }
+    $length = count($items);
+    $content_per_page = 5;
+    $no_of_pages = ceil($length/$content_per_page);
+    $current_page = \Drupal::request()->query->get('q');
+    if ($current_page == NULL || $current_page > $no_of_pages) {
+      $current_page = 1;
+    }
+    $offset = ($current_page-1)*$content_per_page;
     // Return an renderable array applying unique theme for page.
     return array(
       '#theme' => 'actor_list',
-      '#items' => $items,
+      '#items' => array_slice($items,$offset,$content_per_page),
       '#title' => 'our actor list',
+      '#no_of_pages' => $no_of_pages,
+      '#current_page' => $current_page,
     );
   }
   /**
@@ -244,7 +284,8 @@ class PhpController extends ControllerBase {
         $node_image_fid = $node->get('field_movie_poster')->target_id;
         if(!is_null($node_image_fid)) {
           $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
-          $image_entity_url = $image_entity->url();
+          $image_entity_url = $image_entity->uri->value;
+          $image_entity_url = ImageStyle::load('thumbnail')->buildUrl($image_entity_url);
         }
         else {
           $image_entity_url = "/sites/default/files/default_images/obama.png";
@@ -334,7 +375,8 @@ class PhpController extends ControllerBase {
         // kint($node_image_fid );
         if(!is_null($node_image_fid)) {
           $image_entity = \Drupal\file\Entity\File::load($node_image_fid);
-          $image_entity_url = $image_entity->url();
+          $image_entity_url = $image_entity->uri->value;
+          $image_entity_url = ImageStyle::load('thumbnail')->buildUrl($image_entity_url);
         }
         else {
           $image_entity_url = "/sites/default/files/default_images/obama.png";
