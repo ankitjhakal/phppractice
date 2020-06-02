@@ -39,8 +39,7 @@ class PhpController extends ControllerBase {
       $query = \Drupal::entityQuery('node')
          ->condition('status', 1)
          ->condition('type', $bundle)
-         ->condition('title', $name, 'CONTAINS')
-         ->pager(2);
+         ->condition('title', $name, 'CONTAINS');
       $res=$query->execute();
       // kint($res);
       if(!empty($act_id)) {
@@ -64,8 +63,7 @@ class PhpController extends ControllerBase {
      $query = \Drupal::entityQuery('node')
        ->condition('status', 1)
        ->condition('type', $bundle)
-       ->sort('field_release_date', 'DESC')
-       ->pager(2);
+       ->sort('field_release_date', 'DESC');
      $ids = $query->execute();
      $nids = $ids;
     }
@@ -138,25 +136,25 @@ class PhpController extends ControllerBase {
          'halfStarFlag' => $halfStarFlag,
        ];
      }
-     $path = base_path();
-      return [
-        'results' => array(
-          '#theme' => 'movie_list',
-          '#items' => $items,
-          '#title' => 'Movies list',
-          '#form' => $form_rendered,
-          '#path' => 'path'),
-      'pager' => [
-        '#type' => 'pager'
-        ],
-      ];
+     $length = count($items);
+     $content_per_page = 2;
+     $no_of_pages = ceil($length/$content_per_page);
+     $current_page = \Drupal::request()->query->get('q');
+     if ($current_page == NULL || $current_page > $no_of_pages) {
+       $current_page = 1;
+     }
+     $offset = ($current_page-1)*$content_per_page;
      // Return an renderable array applying unique theme for page.
-     // return array(
-     //   '#theme' => 'movie_list',
-     //   '#items' => $items,
-     //   '#form' => $form_rendered,
-     //   '#title' => 'our movie list',
-     // );
+
+     return array(
+       '#theme' => 'movie_list',
+       '#items' => array_slice($items, $offset, $content_per_page),
+       '#title' => 'our actor list',
+       '#no_of_pages' => $no_of_pages,
+       '#form' => $form_rendered,
+       '#current_page' => $current_page,
+       '#word' => $name,
+     );
     }
   }
   /**
@@ -168,7 +166,8 @@ class PhpController extends ControllerBase {
     $bundle = 'actor';
     $query = \Drupal::entityQuery('node')
         ->condition('status', 1)
-        ->condition('type', $bundle);
+        ->condition('type', $bundle)
+        ->pager(3);
     $nids = $query->execute();
     if (empty($nids)) {
       drupal_set_message("No Results Found");
@@ -236,22 +235,20 @@ class PhpController extends ControllerBase {
         }
       }
     }
-    $length = count($items);
-    $content_per_page = 5;
-    $no_of_pages = ceil($length/$content_per_page);
-    $current_page = \Drupal::request()->query->get('q');
-    if ($current_page == NULL || $current_page > $no_of_pages) {
-      $current_page = 1;
-    }
-    $offset = ($current_page-1)*$content_per_page;
+
     // Return an renderable array applying unique theme for page.
-    return array(
-      '#theme' => 'actor_list',
-      '#items' => array_slice($items,$offset,$content_per_page),
-      '#title' => 'our actor list',
-      '#no_of_pages' => $no_of_pages,
-      '#current_page' => $current_page,
-    );
+    $path = base_path();
+     return [
+       'results' => array(
+         '#theme' => 'actor_list',
+         '#items' => $items,
+         '#title' => 'Actor list',
+         '#path' => 'path'),
+     'pager' => [
+       '#type' => 'pager'
+       ],
+     ];
+
   }
   /**
      * This function is used to return list of movies of a particular actor.

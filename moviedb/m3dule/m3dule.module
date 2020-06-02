@@ -1,4 +1,5 @@
 <?php
+use \Symfony\Component\HttpFoundation\RedirectResponse;
 // use \Drupal\comment\CommentInterface;
 // use Drupal\Core\Url;
 // function m3dule_comment_links_alter(array &$links, CommentInterface $entity, array &$context) {
@@ -55,16 +56,16 @@
   *   },
   * )
   */
-function m3dule_update_8701() {
-  \Drupal::entityDefinitionUpdateManager()->installEntityType(new ConfigEntityType([
-    'id' => 'advertiser_type',
-    'label' => new TranslatableMarkup('Advertiser Type'),
-    'entity_keys' => ['id' => 'id', 'uuid' => 'uuid'],
-    'config_export' => [
-      'id',
-    ],
-    ]));
-}
+// function m3dule_update_8701() {
+//   \Drupal::entityDefinitionUpdateManager()->installEntityType(new ConfigEntityType([
+//     'id' => 'advertiser_type',
+//     'label' => new TranslatableMarkup('Advertiser Type'),
+//     'entity_keys' => ['id' => 'id', 'uuid' => 'uuid'],
+//     'config_export' => [
+//       'id',
+//     ],
+//     ]));
+// }
 /**
  * Update 8001 - Create maestro_process_status entity.
  */
@@ -89,6 +90,12 @@ function m3dule_page_attachments(array &$page) {
   $page['#attached']['library'][] = 'm3dule/m3dule_css';
 }
 
+
+function m3dule_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  $response = new RedirectResponse("/node");
+  $response->send();
+  // kint($entity);
+}
 /**
    * Implemetation of hook_theme function.
    * This function is used to return a renderable array for different themes.
@@ -98,10 +105,11 @@ function m3dule_page_attachments(array &$page) {
 function m3dule_theme($existing, $type, $theme, $path) {
   return array(
     'movie_list' => array(
-      'variables' => array('items' => array(), 'form' => array(), 'title' => '', 'no_of_pages' => '', 'current_page' => '')
+      'variables' => array('items' => array(), 'form' => array(), 'title' => '',
+         'no_of_pages' => '', 'current_page' => '', 'word' => '')
     ),
     'actor_list' => array(
-      'variables' => array('items' => array(), 'title' => '', 'no_of_pages' => '', 'current_page' => '')
+      'variables' => array('items' => array(), 'title' => '', 'pager' => array())
     ),
     'actor_movies_list' => array(
       'variables' => array('items' => array(), 'title' => '')

@@ -7,21 +7,32 @@
 		float: none;
 } */
 
-.pagination {
+.mypager {
   display: inline-block;
+	text-align: center;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	position:relative;
+
 }
-.pagination a {
+.mypager a {
   color: black;
   float: left;
   padding: 8px 16px;
   text-decoration: none;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin-top: 100px;
+	/* border-collapse: collapse; */
+
 }
-.pagination a.active {
+.mypager a.active {
   background-color: #ea2d49;
   color: white;
-  border-radius: 5px;
+  /* border-radius: 5px; */
 }
-.pagination a:hover:not(.active) {
+.mypager a:hover:not(.active) {
   background-color: #ddd;
   border-radius: 5px;
 }

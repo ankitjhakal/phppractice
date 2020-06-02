@@ -40,4 +40,28 @@
     {% endfor %}
   </tbody>
 </table>
-{{ pager }}
+<div class="mypager">
+  {% if current_page>1 %}
+    <a href="/m3dule/movielist?q=1">First</a>
+    <a href="/m3dule/movielist?q={{ current_page-1 }}"  >Prev</a>
+  {% endif %}
+  {% for i in range(1,no_of_pages) %}
+    {% if word|length %}
+        {% if i == current_page %}
+          <a href="/m3dule/movielist?word={{ word }}&q={{ i }}" class="active">{{ i }}</a>
+        {% else %}
+          <a href="/m3dule/movielist?word={{ word }}&q={{ i }}">{{ i }}</a>
+        {% endif %}
+    {% else %}
+        {% if i == current_page %}
+          <a href="/m3dule/movielist?q={{ i }}" class="active">{{ i }}</a>
+        {% else %}
+          <a href="/m3dule/movielist?q={{ i }}">{{ i }}</a>
+        {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if current_page<no_of_pages %}
+    <a href="/m3dule/movielist?q={{ current_page+1 }}"  >Next</a>
+    <a href="/m3dule/movielist?q={{ no_of_pages }}" >Last</a>
+  {% endif %}
+</div>
