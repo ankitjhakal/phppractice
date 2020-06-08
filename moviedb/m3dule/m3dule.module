@@ -1,5 +1,19 @@
 <?php
-use \Symfony\Component\HttpFoundation\RedirectResponse;
+// use \Symfony\Component\HttpFoundation\RedirectResponse;
+
+// kint($query->where);
+// pretterier debug tool.
+// dpm($query->where);
+
+//     if ($condition['field'] == 'node.title') {
+//       $condition = array(
+//         'field' => 'node.nid',
+//         'value' => $view->exposed_raw_input['title'],
+//         'operator' => '=',
+//       );
+//     }
+//   }
+// }
 // use \Drupal\comment\CommentInterface;
 // use Drupal\Core\Url;
 // function m3dule_comment_links_alter(array &$links, CommentInterface $entity, array &$context) {
@@ -86,16 +100,64 @@ use \Symfony\Component\HttpFoundation\RedirectResponse;
    * @param  $page an array of page on which file will be attached.
 */
 
+function m3dule_views_query_alter($view, $query) {
+    $node=\Drupal::routeMatch()->getParameter('node');
+    if($node instanceof \Drupal\node\NodeInterface) {
+      $nid=$node->id();
+      $obj=entity_load('node',$nid);
+      $bundle=$obj->bundle();
+    }
+    // kint($bundle);
+    // kint($view->storage->get('id'));
+    // kint($view->current_display);
+  // if ($view->id() == 'my_views' && $view->getDisplay()->display['id'] == 'attachment_1') {
+    if (isset($bundle) && $view->id() == 'task1') {
+      // kint($query->where);
+      foreach ($query->where as &$condition_group) {
+        foreach ($condition_group['conditions'] as &$condition) {
+          if (isset($condition['field']) && ($condition['field'] === 'node_field_data.type')) {
+            // kint($condition['value']);
+
+            if($bundle =="actor") {
+              $condition['value']="actor";
+            }
+            elseif($bundle=="movie") {
+              $condition['value']="movie";
+            }
+          }
+        }
+      }
+  }
+}
+
+
 function m3dule_page_attachments(array &$page) {
   $page['#attached']['library'][] = 'm3dule/m3dule_css';
 }
 
 
-function m3dule_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
-  $response = new RedirectResponse("/node");
-  $response->send();
-  // kint($entity);
+function m3dule_preprocess_node(&$variables) {
+  $node=\Drupal::routeMatch()->getParameter('node');
+  if($node instanceof \Drupal\node\NodeInterface) {
+    $nid=$node->id();
+  }
+  // kint($variables['content']);
+  if($nid == "26") {
+    $form = \Drupal::formBuilder()->getForm('Drupal\m3dule\Form\FilterByName');
+    // Get render html of form
+    $form_rendered = \Drupal::service('renderer')->render($form);
+    $variables['content']['form'] = [
+      '#theme' => 'item_form',
+      '#title' => t('test form'),
+      '#form' => $form_rendered,
+    ];
+  }
 }
+// function m3dule_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+//   $response = new RedirectResponse("/node");
+//   $response->send();
+//   // kint($entity);
+// }
 /**
    * Implemetation of hook_theme function.
    * This function is used to return a renderable array for different themes.
@@ -122,6 +184,9 @@ function m3dule_theme($existing, $type, $theme, $path) {
     ),
     'link_block' => array(
       'variables' => array('loginlink' => '', 'registerlink' => ''),
+    ),
+    'item_form' => array(
+      'variables' => array('title' => '', 'form' => array()),
     ),
   );
 }
