@@ -28,3 +28,16 @@ function m3dule_schema() {
 );
   return $schema;
 }
+
+// function m3dule_update_8804(&$sandbox) {
+//   // $install_module_list = array(
+//   //   'kint',
+//   // );
+//   $uninstall_module_list = array(
+//   'celebrate',
+//   );
+//   \Drupal::service('module_installer')->uninstall($uninstall_module_list);
+//   // module_disable($module_list, TRUE);
+//   // \Drupal::service('module_installer')->install($install_module_list);
+//   // module_enable($module_list, TRUE);
+// }

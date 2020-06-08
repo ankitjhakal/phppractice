@@ -94,11 +94,41 @@
 //     return 'Process Status entity already exists';
 //   }
 // }
+
 /**
-   * Implemetation of hook_page_attachments function.
-   * This function is used to attach a file to a set or subset of pages.
-   * @param  $page an array of page on which file will be attached.
-*/
+ * Enable the modules some_module and some_other_module.
+ */
+
+function m3dule_update_8810(&$sandbox) {
+  $install_module_list = array(
+   'kint',
+  );
+  $uninstall_module_list = array(
+  'celebrate',
+  );
+  \Drupal::service('module_installer')->uninstall($uninstall_module_list);
+  \Drupal::service('module_installer')->install($install_module_list);
+  $spec = [
+  'description' => 'My description',
+  'fields' => [
+    'myfield1' => [
+      'description' => 'Myfield1 description.',
+      'type' => 'varchar',
+      'length' => 10,
+      'not null' => TRUE,
+      'default' => '',
+    ],
+    'myfield2' => [
+      'description' => 'Myfield2 description',
+      'type' => 'text',
+      'not null' => TRUE,
+    ],
+  ],
+  'primary key' => ['myfield1'],
+];
+$schema = Drupal\Core\Database\Database::getConnection()->schema();
+$schema->createTable('mytable2', $spec);
+}
 
 function m3dule_views_query_alter($view, $query) {
     $node=\Drupal::routeMatch()->getParameter('node');
@@ -130,6 +160,11 @@ function m3dule_views_query_alter($view, $query) {
   }
 }
 
+/**
+* Implemetation of hook_page_attachments function.
+* This function is used to attach a file to a set or subset of pages.
+* @param  $page an array of page on which file will be attached.
+*/
 
 function m3dule_page_attachments(array &$page) {
   $page['#attached']['library'][] = 'm3dule/m3dule_css';
@@ -141,6 +176,7 @@ function m3dule_preprocess_node(&$variables) {
   if($node instanceof \Drupal\node\NodeInterface) {
     $nid=$node->id();
   }
+  // kint($nid);
   // kint($variables['content']);
   if($nid == "26") {
     $form = \Drupal::formBuilder()->getForm('Drupal\m3dule\Form\FilterByName');
