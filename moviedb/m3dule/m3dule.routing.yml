@@ -58,6 +58,24 @@ m3dule.admin_settings:
   options:
     _admin_route: TRUE
 
+
+m3dule.ajaxform:
+  path: '/ajaxform'
+  defaults:
+    _form: '\Drupal\m3dule\Form\Ajaxform'
+    _title: 'Cool ajaxform '
+  requirements:
+    _permission: 'access content'
+
+
+m3dule.AjaxformWithJsCallback:
+  path: '/AjaxformWithJsCallback'
+  defaults:
+    _form: '\Drupal\m3dule\Form\AjaxformWithJsCallback'
+    _title: 'Cool ajaxform '
+  requirements:
+    _permission: 'access content'
+
 m3dule.listshow:
   path: '/test'
   defaults:

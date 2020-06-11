@@ -1,4 +1,6 @@
 <?php
+use Drupal\Core\Url;
+
 // use \Symfony\Component\HttpFoundation\RedirectResponse;
 
 // kint($query->where);
@@ -95,19 +97,38 @@
 //   }
 // }
 
+function m3dule_form_alter(&$form,\Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // kint($form_id);
+  if(in_array($form_id,['node_article_form','node_article_edit_form'])) {
+    $form['body']['#states'] = [
+      'visible'=> [
+        ':input[name="field_with_body[value]"]' => ['checked' => TRUE],
+      ]
+    ];
+
+  }
+}
+
+
+
+
+
+
+
+
 /**
  * Enable the modules some_module and some_other_module.
  */
 
 function m3dule_update_8810(&$sandbox) {
-  $install_module_list = array(
-   'kint',
-  );
-  $uninstall_module_list = array(
-  'celebrate',
-  );
-  \Drupal::service('module_installer')->uninstall($uninstall_module_list);
-  \Drupal::service('module_installer')->install($install_module_list);
+  // $install_module_list = array(
+  //  'kint',
+  // );
+  // $uninstall_module_list = array(
+  // 'celebrate',
+  // );
+  // \Drupal::service('module_installer')->uninstall($uninstall_module_list);
+  // \Drupal::service('module_installer')->install($install_module_list);
   $spec = [
   'description' => 'My description',
   'fields' => [
@@ -145,20 +166,15 @@ function m3dule_views_query_alter($view, $query) {
       // kint($query->where);
       foreach ($query->where as &$condition_group) {
         foreach ($condition_group['conditions'] as &$condition) {
-          if (isset($condition['field']) && ($condition['field'] === 'node_field_data.type')) {
+          if (isset($condition['field']) && ($condition['field'] == 'node_field_data.type')) {
             // kint($condition['value']);
-
-            if($bundle =="actor") {
-              $condition['value']="actor";
-            }
-            elseif($bundle=="movie") {
-              $condition['value']="movie";
-            }
+              $condition['value']=$bundle;
           }
         }
       }
-  }
+    }
 }
+
 
 /**
 * Implemetation of hook_page_attachments function.
@@ -171,29 +187,48 @@ function m3dule_page_attachments(array &$page) {
 }
 
 
-function m3dule_preprocess_node(&$variables) {
-  $node=\Drupal::routeMatch()->getParameter('node');
-  if($node instanceof \Drupal\node\NodeInterface) {
-    $nid=$node->id();
-  }
-  // kint($nid);
-  // kint($variables['content']);
-  if($nid == "26") {
-    $form = \Drupal::formBuilder()->getForm('Drupal\m3dule\Form\FilterByName');
-    // Get render html of form
-    $form_rendered = \Drupal::service('renderer')->render($form);
-    $variables['content']['form'] = [
-      '#theme' => 'item_form',
-      '#title' => t('test form'),
-      '#form' => $form_rendered,
-    ];
-  }
+function m3dule_preprocess_page(&$variables) {
+  //  $url = Url::fromRoute(ROUTE)->toString();
+  // kint($url);
+  // if($url == "/m3dule/actorlist") {
+  //   kint($variables);
+  // }
+  // // kint($nid);
+  // // kint($variables['content']);
+  // if(isset($nid) && $nid == "26") {
+  //   $form = \Drupal::formBuilder()->getForm('Drupal\m3dule\Form\FilterByName');
+  //   // Get render html of form
+  //   // $form_rendered = \Drupal::service('renderer')->render($form);
+  //   $variables['form'] = [
+  //     '#title' => t('test form'),
+  //     '#form' => $form,
+  //   ];
+  // }
 }
 // function m3dule_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
 //   $response = new RedirectResponse("/node");
 //   $response->send();
 //   // kint($entity);
 // }
+// function m3dule_theme_suggestions_node(array $variables) {
+//   $suggestions = array();
+//   kint($variables['elements']);
+//   // $suggestions[] = 'node__' . $variables['elements']['#langcode'];
+//   // return $suggestions;
+// }
+/**
+ * Implements hook_theme_suggestions_page_alter().
+ */
+function m3dule_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if($node instanceof \Drupal\node\NodeInterface) {
+    $nid=$node->id();
+    if($nid=="26") {
+    $suggestions[] = 'page__form'  ;
+    }
+  }
+}
+
 /**
    * Implemetation of hook_theme function.
    * This function is used to return a renderable array for different themes.

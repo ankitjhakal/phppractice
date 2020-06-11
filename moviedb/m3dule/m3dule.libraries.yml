@@ -5,6 +5,12 @@ m3dule_css:
       css/page.css: {}
   js:
     js/ajax.js: {}
+    js/loggy.js: {}
   dependencies:
     - core/jquery
     # - core/drupal.dialog.ajax
+
+m3dule.loggy:
+  version: 2.0
+  js:
+    js/loggy.js: {}
