@@ -6,6 +6,10 @@ name: 'Bootstrap subtheme'
 description: 'Built to use Bootstrap, a sleek, intuitive, and powerful front-end framework for faster and easier web development.'
 package: 'Bootstrap'
 
+# Defines libraries group in which we can add css/js.
+libraries:
+  - mytheme/global-styling
+
 regions:
   navigation: 'Navigation'
   navigation_collapsible: 'Navigation (Collapsible)'
@@ -18,5 +22,3 @@ regions:
   footer: 'Footer'
   page_top: 'Page top'
   page_bottom: 'Page bottom'
-
-

@@ -1,4 +1,5 @@
-# global-styling:
-#   css:
-#     component:
-#       stylesheets/bsubglobal.css: {}
+global-styling:
+  css:
+    component:
+      stylesheets/view.css: {}
+      

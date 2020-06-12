@@ -188,44 +188,32 @@ function m3dule_page_attachments(array &$page) {
 
 
 function m3dule_preprocess_page(&$variables) {
-  //  $url = Url::fromRoute(ROUTE)->toString();
-  // kint($url);
-  // if($url == "/m3dule/actorlist") {
-  //   kint($variables);
-  // }
-  // // kint($nid);
-  // // kint($variables['content']);
-  // if(isset($nid) && $nid == "26") {
-  //   $form = \Drupal::formBuilder()->getForm('Drupal\m3dule\Form\FilterByName');
-  //   // Get render html of form
-  //   // $form_rendered = \Drupal::service('renderer')->render($form);
-  //   $variables['form'] = [
-  //     '#title' => t('test form'),
-  //     '#form' => $form,
-  //   ];
-  // }
+  $current_path = \Drupal::service('path.current')->getPath();
+  $path = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+  // kint($path);
+  if($path == "/m3dule/actorlist") {
+    // kint($variables);
+    $form = \Drupal::formBuilder()->getForm('Drupal\m3dule\Form\FilterByName');
+    $variables['override_form'] = [
+      'title' => t('test form'),
+      'form' => $form,
+    ];
+  }
 }
 // function m3dule_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
 //   $response = new RedirectResponse("/node");
 //   $response->send();
 //   // kint($entity);
 // }
-// function m3dule_theme_suggestions_node(array $variables) {
-//   $suggestions = array();
-//   kint($variables['elements']);
-//   // $suggestions[] = 'node__' . $variables['elements']['#langcode'];
-//   // return $suggestions;
-// }
+
 /**
  * Implements hook_theme_suggestions_page_alter().
  */
 function m3dule_theme_suggestions_page_alter(array &$suggestions, array $variables) {
-  $node = \Drupal::routeMatch()->getParameter('node');
-  if($node instanceof \Drupal\node\NodeInterface) {
-    $nid=$node->id();
-    if($nid=="26") {
-    $suggestions[] = 'page__form'  ;
-    }
+  $current_path = \Drupal::service('path.current')->getPath();
+  $path = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+  if ($path == "/m3dule/actorlist") {
+    $suggestions[] = 'page__searchform';
   }
 }
 
