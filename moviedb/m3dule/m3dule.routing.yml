@@ -15,6 +15,15 @@ m3dule_placeblock:
   requirements:
     _permission: 'access content'
 
+
+m3dule_placeblockwithDI:
+  path: '/placeblockwithDI'
+  defaults:
+    _controller: '\Drupal\m3dule\Controller\TestedDI::placeBlockwithDI'
+    _title: 'practicing DI '
+  requirements:
+    _permission: 'access content'
+
 m3dule_actor:
   path: '/m3dule/actorlist'
   defaults:

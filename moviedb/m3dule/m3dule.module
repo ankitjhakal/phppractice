@@ -147,8 +147,8 @@ function m3dule_update_8810(&$sandbox) {
   ],
   'primary key' => ['myfield1'],
 ];
-$schema = Drupal\Core\Database\Database::getConnection()->schema();
-$schema->createTable('mytable2', $spec);
+  $schema = Drupal\Core\Database\Database::getConnection()->schema();
+  $schema->createTable('mytable2', $spec);
 }
 
 function m3dule_views_query_alter($view, $query) {
