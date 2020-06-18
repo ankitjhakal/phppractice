@@ -1,5 +1,6 @@
 <?php
 use Drupal\Core\Url;
+// use Drupal\Component\Utility\String;
 
 // use \Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -206,6 +207,11 @@ function m3dule_preprocess_page(&$variables) {
 //   // kint($entity);
 // }
 
+function template_preprocess_image_title_caption_formatter(&$vars) {
+  template_preprocess_image_formatter($vars);
+  $vars['caption'] = Drupal\Component\Utility\String::checkPlain($vars['item']->get('title')->getValue());
+}
+
 /**
  * Implements hook_theme_suggestions_page_alter().
  */
@@ -246,6 +252,9 @@ function m3dule_theme($existing, $type, $theme, $path) {
     ),
     'item_form' => array(
       'variables' => array('title' => '', 'form' => array()),
+    ),
+    'image_title_caption_formatter' => array(
+      'variables' => array('item' => NULL, 'item_attributes' => NULL, 'url' => NULL, 'image_style' => NULL),
     ),
   );
 }

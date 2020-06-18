@@ -5,3 +5,5 @@ package: Custom
 version: 8.x
 core: 8.x
 configure: m3dule.admin_settings
+dependencies:
+  - image

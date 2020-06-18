@@ -5,6 +5,8 @@ use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\Component\Utility\Html;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Webform validate handler.
  *
@@ -18,11 +20,25 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_OPTIONAL,
  * )
  */
-class WebVal extends WebformHandlerBase {
+class WebVal extends WebformHandlerBase implements ContainerFactoryPluginInterface {
   use StringTranslationTrait;
+  protected $FormService;
+
   /**
-   * {@inheritdoc}
-   */
+  * Class constructor.
+  */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, $FormService) {
+    $this->FormService = $FormService;
+  }
+
+  /**
+  * {@inheritdoc}
+  */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+   return new static(
+     $container->get('m3dule.result')
+   );
+  }
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
    // kint($webform_submission);
     $values = $webform_submission->getData();
@@ -30,8 +46,9 @@ class WebVal extends WebformHandlerBase {
     $sid = $webform_submission->id();
     // kint($sid);
     // drupal_set_message($sid);
-    $service = \Drupal::service('m3dule.result');
-    $msg = $service->getresult($sid,"quiz");
+    // $service = \Drupal::service('m3dule.result');
+    // $msg = $service->getresult($sid,"quiz");
+    $msg = $this->FormService->getresult($sid, "quiz");
     drupal_set_message($msg);
   }
 

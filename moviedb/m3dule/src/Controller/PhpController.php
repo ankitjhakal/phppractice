@@ -149,7 +149,7 @@ class PhpController extends ControllerBase {
      return array(
        '#theme' => 'movie_list',
        '#items' => array_slice($items, $offset, $content_per_page),
-       '#title' => 'our actor list',
+       '#title' => 'our movie list',
        '#no_of_pages' => $no_of_pages,
        '#form' => $form_rendered,
        '#current_page' => $current_page,
