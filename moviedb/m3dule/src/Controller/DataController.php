@@ -7,18 +7,11 @@ class DataController extends ControllerBase {
   public function listshow() {
     $config = \Drupal::config('m3dule.settings');
     // kint($config);
-    $fid = $config->get('image');
-    if ($config->get('image')!=null) {
-      $image_entity = \Drupal\file\Entity\File::load($fid[0]);
-      $image_entity_url = $image_entity->url();
-    }
-    else {
-      $image_entity_url = "/sites/default/files/default_images/obama.png";
-    }
+
     $items=array();
     $items[] = [
        'title' => $config->get('title'),
-       'url' =>   $image_entity_url,
+       'url' =>   $config->get('image'),
        'desc' => $config->get('description'),
      ];
 

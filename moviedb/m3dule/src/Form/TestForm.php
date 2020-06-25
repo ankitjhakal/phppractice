@@ -45,7 +45,7 @@ class TestForm extends ConfigFormBase {
       '#title' => 'my file',
       '#name' => 'my_custom_file',
       '#description' => $this->t('my file description'),
-      '#default_value' => $config->get('image'),
+      // '#default_value' => $config->get('image'),
       '#upload_location' => 'public://profile-pictures',
       '#upload_validators' => array(
           'file_validate_extensions' => array('gif png jpg jpeg'),
@@ -72,7 +72,9 @@ class TestForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_file = $form_state->getValue('my_file', 0);
+    $form_file = empty($form_state->getValue('my_file')) ? NULL : $form_state->getValue('my_file', 0);
+    // kint($form_file);
+    // die();
     if (isset($form_file[0]) && !empty($form_file[0])) {
       $file = File::load($form_file[0]);
       $file->setPermanent();
@@ -96,7 +98,7 @@ class TestForm extends ConfigFormBase {
     $this->config('m3dule.settings')
       ->set('title', $form_state->getValue('title'))
       ->set('description', $form_state->getValue('description'))
-      ->set('image', $form_state->getValue('my_file'))
+      ->set('image', $image_entity_url)
       ->save();
     parent::submitForm($form, $form_state);
   }

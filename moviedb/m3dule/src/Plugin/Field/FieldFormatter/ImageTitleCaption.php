@@ -31,6 +31,7 @@ class ImageTitleCaption extends ImageFormatter {
     foreach ($elements as &$element) {
       $element['#theme'] = 'image_title_caption_formatter';
     }
+    // kint($elements);
 
     return $elements;
   }

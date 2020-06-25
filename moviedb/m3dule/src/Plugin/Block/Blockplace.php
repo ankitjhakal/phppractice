@@ -15,18 +15,19 @@ use Drupal\file\Entity\File;
  *   category = @Translation("List Config World"),
  * )
  */
-class Blockplace extends BlockBase {  /**
+class Blockplace extends BlockBase {
+  /**
    * {@inheritdoc}
    */
   public function listshow() {
     $config = \Drupal::config('m3dule.settings');
-    $fid = $config->get('image');
-    $image_entity = \Drupal\file\Entity\File::load($fid[0]);
-    $image_entity_url = $image_entity->url();
+    // kint($config->get('title'));
+    // kint($config->get('image'));
+    // die();
     $items=array();
     $items[] = [
       'title' => $config->get('title'),
-      'url' =>   $image_entity_url,
+      'url' =>   $config->get('image'),
       'desc' => $config->get('description'),
      ];
     return array(

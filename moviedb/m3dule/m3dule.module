@@ -1,5 +1,9 @@
 <?php
 use Drupal\Core\Url;
+use \Drupal\Core\Entity\EntityInterface;
+use \Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\node\Entity\NodeType;
+use Drupal\Component\Utility\Xss;
 // use Drupal\Component\Utility\String;
 
 // use \Symfony\Component\HttpFoundation\RedirectResponse;
@@ -98,17 +102,17 @@ use Drupal\Core\Url;
 //   }
 // }
 
-function m3dule_form_alter(&$form,\Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  // kint($form_id);
-  if(in_array($form_id,['node_article_form','node_article_edit_form'])) {
-    $form['body']['#states'] = [
-      'visible'=> [
-        ':input[name="field_with_body[value]"]' => ['checked' => TRUE],
-      ]
-    ];
-
-  }
-}
+// function m3dule_form_alter(&$form,\Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+//   // kint($form_id);
+//   if(in_array($form_id,['node_article_form','node_article_edit_form'])) {
+//     $form['body']['#states'] = [
+//       'visible'=> [
+//         ':input[name="field_with_body[value]"]' => ['checked' => TRUE],
+//       ]
+//     ];
+//
+//   }
+// }
 
 
 
@@ -176,7 +180,45 @@ function m3dule_views_query_alter($view, $query) {
     }
 }
 
+function m3dule_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if($entity->getEntityTypeId() == "node") {
+    $description = [
+      '#tag' => 'meta',
+      '#attributes' => [
+        'name' =>  'description',
+        'content' => ['#plain_text' => $entity->title->value],
+      ]
+    ];
+    $build['#attached']['html_head'][] = [$description, 'description'];
+  }
+}
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function m3dule_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if($display->getComponent('my_own_pseudo_field')) {
+    $build['my_own_pseudo_field'] = [
+      '#type' => 'markup',
+      '#markup' => '<h1>THis is my custom content from psuedo field</h1>',
+    ];
+  }
+}
 
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function m3dule_entity_extra_field_info() {
+  $extra = array();
+  foreach (NodeType::loadMultiple() as $bundle) {
+    $extra['node'][$bundle->Id()]['display']['my_own_pseudo_field'] = array(
+      'label' => t('my own field'),
+      'description' => t('This in my own pseudo-field'),
+      'weight' => 100,
+      'visible' => TRUE,
+    );
+  }
+  return $extra;
+}
 /**
 * Implemetation of hook_page_attachments function.
 * This function is used to attach a file to a set or subset of pages.
@@ -207,9 +249,12 @@ function m3dule_preprocess_page(&$variables) {
 //   // kint($entity);
 // }
 
-function template_preprocess_image_title_caption_formatter(&$vars) {
-  template_preprocess_image_formatter($vars);
-  $vars['caption'] = Drupal\Component\Utility\String::checkPlain($vars['item']->get('title')->getValue());
+function template_preprocess_image_title_caption_formatter(&$variables) {
+  module_load_include('inc', 'image', 'image.field');
+  template_preprocess_image_formatter($variables);
+  // $variables['caption1'] = Drupal\Component\Utility\String::checkPlain($variables['item']->get('title')->getValue());
+  $variables['caption'] = Xss::filter($variables['item']->get('title')->getValue());
+  // kint($variables);
 }
 
 /**
@@ -258,3 +303,84 @@ function m3dule_theme($existing, $type, $theme, $path) {
     ),
   );
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function m3dule_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if($form_id === 'menu_add_form' || $form_id === 'menu_edit_form') {
+    m3dule_alter_menu_forms($form, $form_state, $form_id);
+    // kint($form_id);
+  }
+}
+
+/**
+ * Handles the form alter for the menu_add_form and menu_edit_form forms.
+ */
+function m3dule_alter_menu_forms(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $menu = $form_state->getFormObject()->getEntity();
+  if(isset($form['links'])) {
+    $form['links']['#weight'] = 2;
+  }
+  $form['series_connector'] = array(
+    '#type' => 'entity_autocomplete',
+    '#target_type' => 'node',
+    '#title' => t('Connect menu to specific series'),
+    '#description' => t('Connect menu to specific series'),
+    '#selection_settings' => array(
+      'target_bundles' => array('actor','movie'),
+    ),
+    '#default_value' => (isset($seriesId) && is_numeric($seriesId))? \Drupal\node\Entity\Node::load($seriesId):NULL,
+    '#weight' => 1);
+  $form['#entity_builders'][] = 'm3dule_form_menu_add_form_builder';
+}
+
+/**
+ * Entity builder for the menu configuration entity.
+ */
+function m3dule_form_menu_add_form_builder($entity_type, \Drupal\system\Entity\Menu $menu, &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  // kint($menu);
+  // die();
+  if($form_state->getValue('series_connector')) {
+    $menu->setThirdPartySetting('m3dule', 'series_connector', $form_state->getValue('series_connector'));
+    return;
+  }
+  $menu->unsetThirdPartySetting('m3dule', 'series_connector');
+}
+//
+// function m3dule_module_implements_alter(&$implementations, $hook) {
+//   switch ($hook) {
+//    // Move our hook_entity_type_alter() implementation to the end of the list.
+//    case 'entity_type_alter':
+//      $group = $implementations['m3dule'];
+//      unset($implementations['m3dule']);
+//      $implementations['m3dule'] = $group + $implementations;
+//      break;
+//  }
+// }
+function m3dule_module_implements_alter(&$implementations, $hook) {
+  switch ($hook) {
+
+    // Move our hook_entity_type_alter() implementation to the end of the list.
+    case 'form_alter':
+      $group = $implementations['m3dule'];
+      unset($implementations['m3dule']);
+      $implementations['m3dule'] = $group;
+      break;
+
+    // Move our hook_entity_bundle_info_alter() implementation to the top of the
+    // list, so that any other hook implementation can rely on bundles being
+    // correctly marked as translatable.
+    case 'alter_menu_forms':
+      $group = $implementations['m3dule'];
+      $implementations = [
+        'm3dule' => $group,
+      ] + $implementations;
+      break;
+  }
+}
+
+function m3dule_install() {
+   // db_query("UPDATE {system} SET weight = 12 WHERE name = 'm3dule'");
+   db_update('system')->fields(array('weight'=>999))->condition('name', 'm3dule', '=')->execute();
+ }
